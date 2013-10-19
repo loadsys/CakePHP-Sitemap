@@ -4,17 +4,16 @@ Generate automatic HTML and XML sitemaps for your CakePHP application.
 
 ##Background
 
-[A PARAGRAPH DESCRIBING WHY YOU BUILT THIS]
-
-[ANOTHER PARAGRAPH DESCRIBING YOUR IMPETUS FOR RELEASING THIS]
+Only generates a sitemap currently for controllers/models in the core App, not in Plugins.
+Generates an HTML list using a dl list.
+Generates an sitemap.xml file as well.
+View caching used for the HTML files.
+Allows for setting a custom callback function to build urls.
 
 ##Requirements
 
-[PHP_VERSION REQUIREMENT]
-[CAKEPHP_VERSION REQUIREMENT]
-[REQUIRED PLUGINS]
-[OTHER EXTERNAL DEPENDENCIES]
-[SNARKY COMMENT HERE]
+PHP 5.3+
+CakePHP 2.1+
 
 ##Installation
 
@@ -22,8 +21,8 @@ Generate automatic HTML and XML sitemaps for your CakePHP application.
 
 Download this: http://github.com/loadsys/CakePHP-Sitemap/zipball/master
 Unzip that download.
-Copy the resulting folder to app/plugins
-Rename the folder you just copied to [PLUGIN_NAME]
+Copy the resulting folder to app/Plugin
+Rename the folder you just copied to Sitemap
 
 ###GIT Submodule
 
@@ -41,23 +40,40 @@ git clone git://github.com/loadsys/CakePHP-Sitemap.git Sitemap
 
 ##Usage
 
-[EXAMPLE ON HOW TO SETUP YOUR PLUGIN]
+* Add this this line to your bootstrap:
+````php
+CakePlugin::load(array('Sitemap' => array('routes' => TRUE, 'bootstrap' => TRUE)));
+````
 
-[PARAGRAPH EXPLAINING DIFFERENT WAYS TO CONFIGURE THE PLUGIN]
+* Add the component to the controllers desired to generate a sitemap for that controller
+````php
+public $components = array(
+	'Sitemap.Sitemap',
+);
+````
+
+* Add the behavior to the model desired to generate a sitemap for that model
+````php
+public $behaviors = array(
+	'Sitemap.Sitemap' => array(
+		'primaryKey' => 'id', //Default primary key field
+		'loc' => 'buildUrl', //Default function called that builds a url, passes parameters (Model $Model, $primaryKey)
+		'lastmod' => 'modified', //Default last modified field, can be set to FALSE if no field for this
+		'changefreq' => 'daily', //Default change frequency applied to all model items of this type, can be set to FALSE if no field for this
+		'priority' => '0.9', //Default priority applied to all model items of this type, can be set to FALSE if no field for this
+		'conditions' => array(), //Conditions to limit or control the returned results for the sitemap
+	)
+);
+````
+
+* Sitemap should now be visible at /sitemap and /sitemap.xml
 
 ####Options
 
-[ONE OPTION] : [OPTION EXPLANATION]
-[ANOTHER OPTION] : [OPTION EXPLANATION]
-[YET ANOTHER OPTION]
-[VALID PARAMETER]
-[ANOTHER VALID PARAMETER]
 
 ###Todo
 
-[TODO ITEM]
-[ANOTHER ITEM]
-[COMPLETED ITEM]
+* Write Unit Tests
 
 ##License
 
