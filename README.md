@@ -4,7 +4,7 @@ Generate automatic HTML and XML sitemaps for your CakePHP application.
 
 ##Background
 
-Only generates a sitemap currently for controllers/models in the core App, not in Plugins.
+Only generates a sitemap currently for models in the core App, not in Plugins.
 Generates an HTML list using a dl list.
 Generates an sitemap.xml file as well.
 View caching used for the HTML files.
@@ -12,8 +12,8 @@ Allows for setting a custom callback function to build urls.
 
 ##Requirements
 
-PHP 5.3+
-CakePHP 2.1+
+* PHP 5.3+
+* CakePHP 2.1+
 
 ##Installation
 
@@ -43,13 +43,6 @@ git clone git://github.com/loadsys/CakePHP-Sitemap.git Sitemap
 * Add this this line to your bootstrap:
 ````php
 CakePlugin::load(array('Sitemap' => array('routes' => TRUE, 'bootstrap' => TRUE)));
-````
-
-* Add the component to the controllers desired to generate a sitemap for that controller
-````php
-public $components = array(
-	'Sitemap.Sitemap',
-);
 ````
 
 * Add the behavior to the model desired to generate a sitemap for that model

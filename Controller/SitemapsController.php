@@ -3,23 +3,38 @@ App::uses('AppController', 'Controller');
 
 class SitemapsController extends SitemapAppController {
 
+	/**
+	 * helpers - array of helpers
+	 *
+	 * @var array
+	 */
 	public $helpers = array(
 		'Time',
 		'Html',
 		'Cache',
 	);
 
+	/**
+	 * components - array of components
+	 *
+	 * @var array
+	 */
 	public $components = array(
 		'RequestHandler',
 		'Auth',
 	);
 
+	/**
+	 * cacheAction - view cache timing
+	 *
+	 * @var array
+	 */
 	public $cacheAction = array(
-    'display' => 36000,
+    'display' => 43200,
 	);
 
 	/**
-	 * beforeFilter method
+	 * beforeFilter - beforeFilter callback
 	 *
 	 * @return void
 	 */
@@ -29,7 +44,8 @@ class SitemapsController extends SitemapAppController {
 	}
 
 	/**
-	 * [beforeRender description]
+	 * beforeRender - beforeRender callback
+	 *
 	 * @return [type] [description]
 	 */
 	public function beforeRender() {
@@ -37,69 +53,56 @@ class SitemapsController extends SitemapAppController {
 	}
 
 	/**
-	 * [display description]
+	 * display - display the sitemap
+	 *
 	 * @return [type] [description]
 	 */
 	public function display() {
-
 		$sitemapData = array();
 
-		//Generate a list of Controllers in the App
-		$controllers = $this->_generateListOfControllers();
+		//Generate a list of Models in the App
+		$listOfModels = $this->_generateListOfModels();
 
-		//foreach controller
-		foreach($controllers as $controller) {
-			App::uses($controller['Instance'], 'Controller');
+		//foreach model
+		foreach($listOfModels as $model) {
+			App::uses($model, 'Model');
 
 			// We need to load the class
-			$newController = new $controller['Instance'];
-			$newController->constructClasses();
+			$newModel = new $model;
 
-			if(array_key_exists('Sitemap.Sitemap', $newController->components)) {
-				$response = $newController->Sitemap->returnSitemapData($newController);
-				$sitemapData[$newController->name] = $response;
+			if(array_key_exists('Sitemap.Sitemap', $newModel->actsAs)) {
+				$response = $newModel->generateSitemapData();
+				$sitemapData[$newModel->name] = $response;
 			} else {
 			}
-			unset($newController);
+			unset($newModel);
 		}
 
 		$this->set('sitemapData', $sitemapData);
 	}
 
 	/**
-	 * [_generateListOfControllers description]
+	 * _generateListOfModels - generate the list of models
+	 *
 	 * @return [type] [description]
 	 */
-	protected function _generateListOfControllers() {
-		$aCtrlClasses = App::objects('Controller');
+	protected function _generateListOfModels() {
+		//Generate list of Models
+		$appModelClasses = App::objects('Model');
 
-		//foreach Controller
-		foreach ($aCtrlClasses as $controller) {
-			if ($controller != 'AppController') {
-				// Load the controller
-				App::import('Controller', str_replace('Controller', '', $controller));
+		$listOfModels = array();
 
-				// Load its methods / actions
-				$aMethods = get_class_methods($controller);
-
-				foreach ($aMethods as $idx => $method) {
-
-					if ($method{0} == '_') {
-						unset($aMethods[$idx]);
-					}
-				}
-
-				// Load the ApplicationController (if there is one)
-				App::import('Controller', 'AppController');
-				$parentActions = get_class_methods('AppController');
-
-				$controllers[$controller] = array_diff($aMethods, $parentActions);
-				$controllers[$controller]['Instance'] = $controller;
+		//Foreach Model
+		foreach ($appModelClasses as $modelClass) {
+			if ($modelClass != 'AppModel') {
+				// Load the Model
+				App::import('Model', str_replace('Model', '', $modelClass));
+				$listOfModels[] = $modelClass;
 			}
 		}
 
-		return $controllers;
-		}
+		return $listOfModels;
 	}
 
+}
 ?>

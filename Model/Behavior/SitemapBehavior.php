@@ -39,6 +39,12 @@ class SitemapBehavior extends ModelBehavior {
 	 */
 	public function generateSitemapData(Model $Model) {
 
+		$sitemapData = Cache::read('Sitemap.ModelData.' . $Model->name);
+
+		if ($sitemapData !== false) {
+			return $sitemapData;
+		}
+
 		//Load the Model Data
 		$modelData = $Model->find('all', array(
 			'conditions' => $this->settings[$Model->alias]['conditions'],
@@ -66,6 +72,8 @@ class SitemapBehavior extends ModelBehavior {
 				$sitemapData[$key]['priority'] = $this->settings[$Model->alias]['priority'];
 			}
 		}
+
+		Cache::write('Sitemap.ModelData.' . $Model->name, $sitemapData);
 
 		return $sitemapData;
 	}
