@@ -2,6 +2,13 @@
 class SitemapBehavior extends ModelBehavior {
 
 	/**
+	 * _CacheKey - Cache Key
+	 *
+	 * @var string
+	 */
+	protected $_CacheKey = 'Sitemap.ModelData.';
+
+	/**
 	 * setup
 	 *
 	 * @param  Model  $Model    [description]
@@ -39,7 +46,8 @@ class SitemapBehavior extends ModelBehavior {
 	 */
 	public function generateSitemapData(Model $Model) {
 
-		$sitemapData = Cache::read('Sitemap.ModelData.' . $Model->name);
+		//Attempt to hit the Model Cache for data
+		$sitemapData = Cache::read($this->_CacheKey . $Model->name);
 
 		if ($sitemapData !== false) {
 			return $sitemapData;
@@ -73,7 +81,7 @@ class SitemapBehavior extends ModelBehavior {
 			}
 		}
 
-		Cache::write('Sitemap.ModelData.' . $Model->name, $sitemapData);
+		Cache::write($this->_CacheKey . $Model->name, $sitemapData);
 
 		return $sitemapData;
 	}
