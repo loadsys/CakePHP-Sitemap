@@ -47,7 +47,7 @@ CakePlugin::load(array('Sitemap' => array('routes' => TRUE, 'bootstrap' => TRUE)
 
 * Add the behavior to the model desired to generate a sitemap for that model
 ````php
-public $behaviors = array(
+public $actsAs = array(
 	'Sitemap.Sitemap' => array(
 		'primaryKey' => 'id', //Default primary key field
 		'loc' => 'buildUrl', //Default function called that builds a url, passes parameters (Model $Model, $primaryKey)
