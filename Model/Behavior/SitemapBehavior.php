@@ -30,7 +30,7 @@ class SitemapBehavior extends ModelBehavior {
 	}
 
 	/**
-	 * buildUrl
+	 * buildUrl - basic build URL function for the model behavior, basic URL using action => 'view'
 	 *
 	 * @return [type] [description]
 	 */
@@ -39,7 +39,7 @@ class SitemapBehavior extends ModelBehavior {
 	}
 
 	/**
-	 * generateSitemapData
+	 * generateSitemapData - generate the sitemap data, attempting to hit the cache for this data
 	 *
 	 * @param  Model  $Model [description]
 	 * @return [type]        [description]
@@ -56,10 +56,26 @@ class SitemapBehavior extends ModelBehavior {
 		//Load the Model Data
 		$modelData = $Model->find('all', array(
 			'conditions' => $this->settings[$Model->alias]['conditions'],
-			'contain' => array(
-			),
+			'recursive' => -1,
 		));
 
+		//Build the sitemap elements
+		$sitemapData = $this->_buildSitemapElements($Model, $modelData);
+
+		//Write to the Cache
+		Cache::write($this->_CacheKey . $Model->name, $sitemapData);
+
+		return $sitemapData;
+	}
+
+	/**
+	 * _buildSitemapElements - build the sitemap elements
+	 *
+	 * @param  Model  $Model     [description]
+	 * @param  [type] $modelData [description]
+	 * @return [type]            [description]
+	 */
+	protected function _buildSitemapElements(Model $Model, $modelData) {
 		$sitemapData = array();
 
 		//Loop through the Model data and create the array of elements for the sitemap
@@ -81,9 +97,8 @@ class SitemapBehavior extends ModelBehavior {
 			}
 		}
 
-		Cache::write($this->_CacheKey . $Model->name, $sitemapData);
-
 		return $sitemapData;
+
 	}
 }
 ?>
