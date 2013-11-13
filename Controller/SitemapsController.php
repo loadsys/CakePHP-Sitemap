@@ -1,5 +1,6 @@
 <?php
 App::uses('AppController', 'Controller');
+App::uses('PagesIterator', 'Sitemap.Vendor/Iterators');
 
 class SitemapsController extends SitemapAppController {
 
@@ -78,6 +79,9 @@ class SitemapsController extends SitemapAppController {
 			unset($newModel);
 		}
 
+		//Generate Sitemap of Static Pages
+		$sitemapData['Page'] = $this->_generateListOfStaticPages();
+
 		$this->set('sitemapData', $sitemapData);
 	}
 
@@ -102,6 +106,29 @@ class SitemapsController extends SitemapAppController {
 		}
 
 		return $listOfModels;
+	}
+
+	/**
+	 * _generateListOfStaticPages - generate the list of static pages and the sitemap data
+	 *
+	 * @return [type] [description]
+	 */
+	protected function _generateListOfStaticPages() {
+		$pagesSitemap = array();
+
+		$pages = new PagesIterator(APP . 'View' . DS .'Pages' . DS, array());
+		$pagesArray = iterator_to_array($pages);
+
+		foreach($pagesArray as $key => $page) {
+			$pagesSitemap[$key] = array();
+
+			$pagesSitemap[$key]['loc'] = $page['url'];
+			$pagesSitemap[$key]['lastmod'] = $page['modified'];
+			$pagesSitemap[$key]['changefreq'] = 'daily';
+			$pagesSitemap[$key]['priority'] = '1.0';
+		}
+
+		return $pagesSitemap;
 	}
 
 }
