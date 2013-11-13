@@ -116,7 +116,7 @@ class SitemapsController extends SitemapAppController {
 	protected function _generateListOfStaticPages() {
 		$pagesSitemap = array();
 
-		$pages = new PagesIterator(APP . 'View' . DS .'Pages' . DS, array());
+		$pages = new PagesIterator(APP . 'View' . DS .'Pages' . DS, array(), $this->request->webroot);
 		$pagesArray = iterator_to_array($pages);
 
 		foreach($pagesArray as $key => $page) {
