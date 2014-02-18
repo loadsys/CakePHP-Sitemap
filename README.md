@@ -15,28 +15,29 @@ Allows for setting a custom callback function to build urls.
 * PHP 5.3+
 * CakePHP 2.1+
 
-##Installation
+## Installation ##
 
-###Manual
+### Composer ###
 
-Download this: http://github.com/loadsys/CakePHP-Sitemap/zipball/master
-Unzip that download.
-Copy the resulting folder to app/Plugin
-Rename the folder you just copied to Sitemap
+Ensure `require` is present in `composer.json`. This will install the plugin into `Plugin/SocialLinks`:
+
+```
+{
+	"require": {
+		"loadsys/cakephp_sitemap": "dev-master",
+	}
+}
+```
 
 ###GIT Submodule
 
 In your app directory type:
 
+``` bash
 git submodule add git://github.com/loadsys/CakePHP-Sitemap.git Plugin/Sitemap
 git submodule init
 git submodule update
-
-###GIT Clone
-
-In your plugin directory type
-
-git clone git://github.com/loadsys/CakePHP-Sitemap.git Sitemap
+```
 
 ##Usage
 
@@ -61,13 +62,13 @@ public $actsAs = array(
 
 * Sitemap should now be visible at /sitemap and /sitemap.xml
 
-####Options
+## Contributing
 
+* Fork the plugin to your Github account
+* Checkout the plugin
+* Create a new branch with your changes
+* Issue a PR back to the master branch with your changes
 
-###Todo
-
-* Write Unit Tests
-
-##License
+## License
 
 Copyright (c) 2013 Loadsys Web Strategies
