@@ -1,6 +1,6 @@
 {
     "name": "loadsys/cakephp_sitemap",
-    "description": "A CakePHP Plugin for adding a Static Sitemap to an app",
+    "description": "A CakePHP Plugin for adding automatic XML and HTML Sitemaps to an CakePHP application",
     "type": "cakephp-plugin",
     "keywords": ["cakephp","model","behavior"],
     "license": "MIT",
