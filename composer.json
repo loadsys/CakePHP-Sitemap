@@ -1,0 +1,26 @@
+{
+    "name": "loadsys/cakephp_sitemap",
+    "description": "A CakePHP Plugin for adding a Static Sitemap to an app",
+    "type": "cakephp-plugin",
+    "keywords": ["cakephp","model","behavior"],
+    "license": "MIT",
+    "homepage": "https://github.com/loadsys/CakePHP-Sitemap",
+    "authors": [
+        {
+            "name": "Justin Yost",
+            "homepage": "https://github.com/jtyost2",
+            "email": "justin.yost@yostivanich.com"
+        }
+    ],
+    "support": {
+            "issues": "https://github.com/loadsys/CakePHP-Sitemap/issues",
+            "source": "https://github.com/loadsys/CakePHP-Sitemap"
+    },
+    "require": {
+        "php": ">=5.3.0",
+        "composer/installers": "*"
+    },
+    "extra": {
+        "installer-name": "Sitemap"
+    }
+}
