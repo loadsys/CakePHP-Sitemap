@@ -1,16 +1,16 @@
-#CakePHP-Sitemap Plugin
+# CakePHP-Sitemap Plugin #
 
-Generate automatic HTML and XML sitemaps for your CakePHP application.
+A CakePHP Plugin for adding automatic XML and HTML Sitemaps to an CakePHP application
 
-##Background
+## Background ##
 
-Only generates a sitemap currently for models in the core App, not in Plugins.
-Generates an HTML list using a dl list.
-Generates an sitemap.xml file as well.
-View caching used for the HTML files.
-Allows for setting a custom callback function to build urls.
+* Only generates a sitemap currently for models in the core App, not in Plugins.
+* Generates an HTML list using a dl list.
+* Generates an sitemap.xml file as well.
+* View caching used for the HTML files.
+* Allows for setting a custom callback function to build urls.
 
-##Requirements
+##Requirements ##
 
 * PHP 5.3+
 * CakePHP 2.1+
@@ -19,7 +19,8 @@ Allows for setting a custom callback function to build urls.
 
 ### Composer ###
 
-Ensure `require` is present in `composer.json`. This will install the plugin into `Plugin/SocialLinks`:
+<<<<<<< Updated upstream
+Ensure `require` is present in `composer.json`. This will install the plugin into `Plugin/Sitemap`:
 
 ```
 {
@@ -29,24 +30,34 @@ Ensure `require` is present in `composer.json`. This will install the plugin int
 }
 ```
 
-###GIT Submodule
+### GIT Submodule ###
 
 In your app directory type:
 
-``` bash
+````bash
 git submodule add git://github.com/loadsys/CakePHP-Sitemap.git Plugin/Sitemap
 git submodule init
 git submodule update
-```
+````
+
+###GIT Clone
+
+In your plugin directory type:
+
+````bash
+git clone git://github.com/loadsys/CakePHP-Sitemap.git Sitemap
+````
 
 ##Usage
 
 * Add this this line to your bootstrap:
+
 ````php
 CakePlugin::load(array('Sitemap' => array('routes' => TRUE, 'bootstrap' => TRUE)));
 ````
 
 * Add the behavior to the model desired to generate a sitemap for that model
+
 ````php
 public $actsAs = array(
 	'Sitemap.Sitemap' => array(
