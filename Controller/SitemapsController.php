@@ -71,7 +71,7 @@ class SitemapsController extends SitemapAppController {
 			// We need to load the class
 			$newModel = new $model;
 
-			if(array_key_exists('Sitemap.Sitemap', $newModel->actsAs)) {
+			if (!empty($newModel->actsAs) && array_key_exists('Sitemap.Sitemap', $newModel->actsAs)) {
 				$response = $newModel->generateSitemapData();
 				$sitemapData[$newModel->name] = $response;
 			} else {
