@@ -21,10 +21,10 @@ A CakePHP Plugin for adding automatic XML and HTML Sitemaps to an CakePHP applic
 
 Ensure `require` is present in `composer.json`. This will install the plugin into `Plugin/Sitemap`:
 
-```
+```json
 {
 	"require": {
-		"loadsys/cakephp_sitemap": "dev-master",
+		"loadsys/cakephp_sitemap": "~1.0",
 	}
 }
 ```
@@ -52,7 +52,7 @@ git clone git://github.com/loadsys/CakePHP-Sitemap.git Sitemap
 * Add this this line to your bootstrap:
 
 ````php
-CakePlugin::load(array('Sitemap' => array('routes' => TRUE, 'bootstrap' => TRUE)));
+CakePlugin::load(array('Sitemap' => array('routes' => true, 'bootstrap' => true)));
 ````
 
 * Add the behavior to the model desired to generate a sitemap for that model
@@ -81,4 +81,4 @@ public $actsAs = array(
 
 ## License
 
-Copyright (c) 2013 Loadsys Web Strategies
+Copyright (c) 2014 Loadsys Web Strategies
