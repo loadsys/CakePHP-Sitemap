@@ -1,11 +1,17 @@
 <?php
-App::uses('AppController', 'Controller');
+/**
+ * SitemapsController contains the action that loads and displays the sitemap
+ */
+App::uses('SitemapAppController', 'Sitemap.Controller');
 App::uses('PagesIterator', 'Sitemap.Lib/Iterators');
 
+/**
+ * SitemapsController
+ */
 class SitemapsController extends SitemapAppController {
 
 	/**
-	 * helpers - array of helpers
+	 * array of helpers
 	 *
 	 * @var array
 	 */
@@ -16,7 +22,7 @@ class SitemapsController extends SitemapAppController {
 	);
 
 	/**
-	 * components - array of components
+	 * array of components
 	 *
 	 * @var array
 	 */
@@ -26,7 +32,7 @@ class SitemapsController extends SitemapAppController {
 	);
 
 	/**
-	 * cacheAction - view cache timing
+	 * view cache timing
 	 *
 	 * @var array
 	 */
@@ -35,7 +41,7 @@ class SitemapsController extends SitemapAppController {
 	);
 
 	/**
-	 * beforeFilter - beforeFilter callback
+	 * beforeFilter callback
 	 *
 	 * @return void
 	 */
@@ -45,18 +51,9 @@ class SitemapsController extends SitemapAppController {
 	}
 
 	/**
-	 * beforeRender - beforeRender callback
+	 * display the sitemap
 	 *
-	 * @return [type] [description]
-	 */
-	public function beforeRender() {
-		parent::beforeRender();
-	}
-
-	/**
-	 * display - display the sitemap
-	 *
-	 * @return [type] [description]
+	 * @return void
 	 */
 	public function display() {
 		$sitemapData = array();
@@ -71,10 +68,12 @@ class SitemapsController extends SitemapAppController {
 			// We need to load the class
 			$newModel = new $model;
 
-			if (!empty($newModel->actsAs) && array_key_exists('Sitemap.Sitemap', $newModel->actsAs)) {
+			if (
+				!empty($newModel->actsAs)
+				&& array_key_exists('Sitemap.Sitemap', $newModel->actsAs)
+			) {
 				$response = $newModel->generateSitemapData();
 				$sitemapData[$newModel->name] = $response;
-			} else {
 			}
 			unset($newModel);
 		}
@@ -86,17 +85,15 @@ class SitemapsController extends SitemapAppController {
 	}
 
 	/**
-	 * _generateListOfModels - generate the list of models
+	 * generate the list of models
 	 *
-	 * @return [type] [description]
+	 * @return array array of Models with the class names
 	 */
 	protected function _generateListOfModels() {
 		//Generate list of Models
 		$appModelClasses = App::objects('Model');
-
 		$listOfModels = array();
 
-		//Foreach Model
 		foreach ($appModelClasses as $modelClass) {
 			if ($modelClass != 'AppModel') {
 				// Load the Model
@@ -109,9 +106,9 @@ class SitemapsController extends SitemapAppController {
 	}
 
 	/**
-	 * _generateListOfStaticPages - generate the list of static pages and the sitemap data
+	 * generate the list of static pages and the sitemap data
 	 *
-	 * @return [type] [description]
+	 * @return array array of sitemap data for all the static pages
 	 */
 	protected function _generateListOfStaticPages() {
 		$pagesSitemap = array();
@@ -132,4 +129,3 @@ class SitemapsController extends SitemapAppController {
 	}
 
 }
-?>
