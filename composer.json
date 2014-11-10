@@ -2,7 +2,7 @@
   "name": "loadsys/cakephp_sitemap",
   "description": "A CakePHP Plugin for adding automatic XML and HTML Sitemaps to an CakePHP application",
   "type": "cakephp-plugin",
-  "keywords": ["cakephp","model","behavior"],
+  "keywords": ["cakephp","model","behavior","sitemap"],
   "license": "MIT",
   "homepage": "https://github.com/loadsys/CakePHP-Sitemap",
   "authors": [
