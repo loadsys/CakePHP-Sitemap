@@ -1,5 +1,5 @@
 <?php
-App::uses('ExtFilteredDirIterator', 'Sitemap.Vendor/Iterators');
+App::uses('ExtFilteredDirIterator', 'Sitemap.Lib/Iterators');
 
 /**
  * PagesIterator

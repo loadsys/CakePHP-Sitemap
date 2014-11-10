@@ -1,6 +1,6 @@
 <?php
 App::uses('AppController', 'Controller');
-App::uses('PagesIterator', 'Sitemap.Vendor/Iterators');
+App::uses('PagesIterator', 'Sitemap.Lib/Iterators');
 
 class SitemapsController extends SitemapAppController {
 
