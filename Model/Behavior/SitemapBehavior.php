@@ -1,21 +1,31 @@
 <?php
+/**
+ * Sitemap Behavior enables sites to display and list a sitemap that is tied
+ * to a specified model
+ */
+
+App::uses('ModelBehavior', 'Model');
+
+/**
+ * SitemapBhavior
+ */
 class SitemapBehavior extends ModelBehavior {
 
 	/**
-	 * _CacheKey - Cache Key
+	 * the key to cache data under
 	 *
 	 * @var string
 	 */
 	protected $_CacheKey = 'Sitemap.ModelData.';
 
 	/**
-	 * setup
+	 * Sets up the configuration for this model to use the behavior
 	 *
-	 * @param  Model  $Model    [description]
-	 * @param  array  $settings [description]
-	 * @return [type]           [description]
+	 * @param  Model $model Model using this behavior.
+	 * @param  array $config Configuration options.
+	 * @return void
 	 */
-	public function setup(Model $Model, $settings = array()) {
+	public function setup(Model $Model, $config = array()) {
 		if (!isset($this->settings[$Model->alias])) {
 			$this->settings[$Model->alias] = array(
 				'primaryKey' => 'id',
@@ -26,23 +36,31 @@ class SitemapBehavior extends ModelBehavior {
 				'conditions' => array(),
 			);
 		}
-		$this->settings[$Model->alias] = array_merge($this->settings[$Model->alias], $settings);
+		$this->settings[$Model->alias] = array_merge($this->settings[$Model->alias], $config);
 	}
 
 	/**
-	 * buildUrl - basic build URL function for the model behavior, basic URL using action => 'view'
+	 * basic build URL function for the model behavior, basic URL using action => 'view'
 	 *
-	 * @return [type] [description]
+	 * @return string the url for the
+	 */
+	/**
+	 * basic build URL function for the model behavior, basic URL using
+	 * action => 'view'
+	 *
+	 * @param  Model  		$Model      the Model for this object
+	 * @param  string|id 	$primaryKey the primary key for this object
+	 * @return string             		the complete url to access the item
 	 */
 	public function buildUrl(Model $Model, $primaryKey) {
-		return Router::url(array('plugin' => NULL, 'controller' => Inflector::tableize($Model->name), 'action' => 'view', $primaryKey), TRUE);
+		return Router::url(array('plugin' => null, 'controller' => Inflector::tableize($Model->name), 'action' => 'view', $primaryKey), true);
 	}
 
 	/**
-	 * generateSitemapData - generate the sitemap data, attempting to hit the cache for this data
+	 * generate the sitemap data, attempting to hit the cache for this data
 	 *
-	 * @param  Model  $Model [description]
-	 * @return [type]        [description]
+	 * @param  Model  $Model 	the Model for this object
+	 * @return array 					an array of data for the sitemap
 	 */
 	public function generateSitemapData(Model $Model) {
 
@@ -69,11 +87,11 @@ class SitemapBehavior extends ModelBehavior {
 	}
 
 	/**
-	 * _buildSitemapElements - build the sitemap elements
+	 * build a single sitemap element
 	 *
-	 * @param  Model  $Model     [description]
-	 * @param  [type] $modelData [description]
-	 * @return [type]            [description]
+	 * @param  Model  $Model     the Model for this object
+	 * @param  array 	$modelData the single data record for the object
+	 * @return array 							the data to build a sitemap record for this object
 	 */
 	protected function _buildSitemapElements(Model $Model, $modelData) {
 		$sitemapData = array();
@@ -98,7 +116,5 @@ class SitemapBehavior extends ModelBehavior {
 		}
 
 		return $sitemapData;
-
 	}
 }
-?>
