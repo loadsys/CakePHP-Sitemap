@@ -1,7 +1,15 @@
 <?php
+/**
+ * Displays the sitemap file
+ *
+ * @package Sitemap.Controller
+ */
 App::uses('AppController', 'Controller');
 App::uses('PagesIterator', 'Sitemap.Lib/Iterators');
 
+/**
+ * SitemapsController
+ */
 class SitemapsController extends SitemapAppController {
 
 	/**
@@ -31,7 +39,7 @@ class SitemapsController extends SitemapAppController {
 	 * @var array
 	 */
 	public $cacheAction = array(
-    'display' => 43200,
+		'display' => 43200,
 	);
 
 	/**
@@ -47,7 +55,7 @@ class SitemapsController extends SitemapAppController {
 	/**
 	 * beforeRender - beforeRender callback
 	 *
-	 * @return [type] [description]
+	 * @return void
 	 */
 	public function beforeRender() {
 		parent::beforeRender();
@@ -56,7 +64,7 @@ class SitemapsController extends SitemapAppController {
 	/**
 	 * display - display the sitemap
 	 *
-	 * @return [type] [description]
+	 * @return void
 	 */
 	public function display() {
 		$sitemapData = array();
@@ -65,7 +73,7 @@ class SitemapsController extends SitemapAppController {
 		$listOfModels = $this->_generateListOfModels();
 
 		//foreach model
-		foreach($listOfModels as $model) {
+		foreach ($listOfModels as $model) {
 			App::uses($model, 'Model');
 
 			// We need to load the class
@@ -88,7 +96,7 @@ class SitemapsController extends SitemapAppController {
 	/**
 	 * _generateListOfModels - generate the list of models
 	 *
-	 * @return [type] [description]
+	 * @return void
 	 */
 	protected function _generateListOfModels() {
 		//Generate list of Models
@@ -111,15 +119,15 @@ class SitemapsController extends SitemapAppController {
 	/**
 	 * _generateListOfStaticPages - generate the list of static pages and the sitemap data
 	 *
-	 * @return [type] [description]
+	 * @return void
 	 */
 	protected function _generateListOfStaticPages() {
 		$pagesSitemap = array();
 
-		$pages = new PagesIterator(APP . 'View' . DS .'Pages' . DS, array(), $this->request->webroot);
+		$pages = new PagesIterator(APP . 'View' . DS . 'Pages' . DS, array(), $this->request->webroot);
 		$pagesArray = iterator_to_array($pages);
 
-		foreach($pagesArray as $key => $page) {
+		foreach ($pagesArray as $key => $page) {
 			$pagesSitemap[$key] = array();
 
 			$pagesSitemap[$key]['loc'] = $page['url'];
@@ -132,4 +140,3 @@ class SitemapsController extends SitemapAppController {
 	}
 
 }
-?>
