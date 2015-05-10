@@ -1,0 +1,58 @@
+sudo: false
+
+language: php
+
+php:
+  - 5.3
+  - 5.4
+  - 5.5
+  - 5.6
+
+env:
+  global:
+    - PLUGIN_NAME=Sitemap
+    - REQUIRE=""
+    - PHPCS_ARGS="-p --extensions=php --standard=vendor/loadsys/loadsys_codesniffer/Loadsys --ignore=vendor/ ."
+    - secure: "Rediyk07XejB6r8VAfDp2nzqYXM+u4loYsi5qV4sXWYHPEHmKvrrQRiBINDmQR6zmbraI9yDSKof2rnHJfvhRAcXt6S8lS6sJcRCMWOpQMZyEgN77rjF8QBwzUEy96SQHKaiTSRQ0KHvzu5SuD7EgdMGUalS5oxsPE5Iyfe/Rto="
+
+  matrix:
+    - DB=mysql CAKE_VERSION=2.3
+    - DB=mysql CAKE_VERSION=2.4
+    - DB=mysql CAKE_VERSION=2.5
+    - DB=mysql CAKE_VERSION=2.6
+
+matrix:
+  fast_finish: true
+  include:
+    - php: 5.6
+      env:
+      - COVERALLS=1
+      - DB=mysql
+      - CAKE_VERSION=2.6
+    - php: 5.6
+      env:
+      - DB=mysql
+      - CAKE_VERSION=2.6
+      - PHPCS=1
+
+cache:
+  directories:
+    - $HOME/.composer/cache
+
+install:
+  - composer config -g github-oauth.github.com $GITHUB_TOKEN
+  - git clone -b master https://github.com/FriendsOfCake/travis.git --depth 1 ../travis
+  - 'sed -i'''' ''s|curl |curl -H "Authorization: token \$GITHUB_TOKEN" |g'' ../travis/before_script.sh'
+
+before_script:
+  - ../travis/before_script.sh
+  - composer require --no-interaction loadsys/loadsys_codesniffer:*
+
+script:
+  - ../travis/script.sh
+
+after_success:
+  - ../travis/after_success.sh
+
+notifications:
+  email: false
