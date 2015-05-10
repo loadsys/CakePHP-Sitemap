@@ -1,7 +1,15 @@
 <?php
+/**
+ * Displays the sitemap file
+ *
+ * @package Sitemap.Controller
+ */
 App::uses('AppController', 'Controller');
 App::uses('PagesIterator', 'Sitemap.Lib/Iterators');
 
+/**
+ * SitemapsController
+ */
 class SitemapsController extends SitemapAppController {
 
 	/**
@@ -31,7 +39,7 @@ class SitemapsController extends SitemapAppController {
 	 * @var array
 	 */
 	public $cacheAction = array(
-    'display' => 43200,
+		'display' => 43200,
 	);
 
 	/**
@@ -65,7 +73,7 @@ class SitemapsController extends SitemapAppController {
 		$listOfModels = $this->_generateListOfModels();
 
 		//foreach model
-		foreach($listOfModels as $model) {
+		foreach ($listOfModels as $model) {
 			App::uses($model, 'Model');
 
 			// We need to load the class
@@ -119,7 +127,7 @@ class SitemapsController extends SitemapAppController {
 		$pages = new PagesIterator(APP . 'View' . DS .'Pages' . DS, array(), $this->request->webroot);
 		$pagesArray = iterator_to_array($pages);
 
-		foreach($pagesArray as $key => $page) {
+		foreach ($pagesArray as $key => $page) {
 			$pagesSitemap[$key] = array();
 
 			$pagesSitemap[$key]['loc'] = $page['url'];
@@ -132,4 +140,3 @@ class SitemapsController extends SitemapAppController {
 	}
 
 }
-?>
