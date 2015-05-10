@@ -26,9 +26,7 @@ A CakePHP Plugin for adding automatic XML and HTML Sitemaps to an CakePHP app
 
 ## Installation
 
-### Composer ###
-
-Ensure `require` is present in `composer.json`. This will install the plugin into `Plugin/Sitemap`:
+### Composer
 
 ````bash
 $ composer require loadsys/cakephp_sitemap:~1.0
