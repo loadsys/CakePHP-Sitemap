@@ -15,6 +15,9 @@ class AllSitemapTest extends PHPUnit_Framework_TestSuite {
 	 * @var array
 	 */
 	public static $suites = array(
+		'AllSitemapLibsTest.php',
+		'AllSitemapModelsTest.php',
+		'AllSitemapControllersTest.php',
 	);
 
 	/**
