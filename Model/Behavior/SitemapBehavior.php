@@ -1,8 +1,17 @@
 <?php
+/**
+ * Behavior that adds methods to return sitemap information for a Model instance
+ *
+ * @package Sitemap.Model.Behavior
+ */
+
+/**
+ * SitemapBehavior
+ */
 class SitemapBehavior extends ModelBehavior {
 
 	/**
-	 * _CacheKey - Cache Key
+	 * Cache Key
 	 *
 	 * @var string
 	 */
@@ -11,9 +20,9 @@ class SitemapBehavior extends ModelBehavior {
 	/**
 	 * setup
 	 *
-	 * @param  Model  $Model    [description]
-	 * @param  array  $settings [description]
-	 * @return [type]           [description]
+	 * @param Model $Model The model to add the Behavior to
+	 * @param array $settings The settings for the Behavior for the Model instance
+	 * @return void
 	 */
 	public function setup(Model $Model, $settings = array()) {
 		if (!isset($this->settings[$Model->alias])) {
@@ -30,22 +39,23 @@ class SitemapBehavior extends ModelBehavior {
 	}
 
 	/**
-	 * buildUrl - basic build URL function for the model behavior, basic URL using action => 'view'
+	 * basic build URL function for the model behavior, basic URL using action => 'view'
 	 *
-	 * @return [type] [description]
+	 * @param Model $Model The model instance being acted upon
+	 * @param string|int $primaryKey The Primary Key for the Model
+	 * @return string
 	 */
 	public function buildUrl(Model $Model, $primaryKey) {
-		return Router::url(array('plugin' => NULL, 'controller' => Inflector::tableize($Model->name), 'action' => 'view', $primaryKey), TRUE);
+		return Router::url(array('plugin' => null, 'controller' => Inflector::tableize($Model->name), 'action' => 'view', $primaryKey), true);
 	}
 
 	/**
-	 * generateSitemapData - generate the sitemap data, attempting to hit the cache for this data
+	 * generate the sitemap data, attempting to hit the cache for this data
 	 *
-	 * @param  Model  $Model [description]
-	 * @return [type]        [description]
+	 * @param Model $Model The model instance being acted upon
+	 * @return array The generated Sitemap data as an array
 	 */
 	public function generateSitemapData(Model $Model) {
-
 		//Attempt to hit the Model Cache for data
 		$sitemapData = Cache::read($this->_CacheKey . $Model->name);
 
@@ -69,36 +79,35 @@ class SitemapBehavior extends ModelBehavior {
 	}
 
 	/**
-	 * _buildSitemapElements - build the sitemap elements
+	 * build the sitemap elements
 	 *
-	 * @param  Model  $Model     [description]
-	 * @param  [type] $modelData [description]
-	 * @return [type]            [description]
+	 * @param Model $Model The model instance being acted upon
+	 * @param array $modelData The current record for the Model
+	 * @return array an array of sitemap data
 	 */
 	protected function _buildSitemapElements(Model $Model, $modelData) {
 		$sitemapData = array();
 
 		//Loop through the Model data and create the array of elements for the sitemap
-		foreach($modelData as $key => $data) {
+		foreach ($modelData as $key => $data) {
 			$sitemapData[$key] = array();
 
 			$sitemapData[$key]['loc'] = call_user_func(array($Model, $this->settings[$Model->alias]['loc']), $data[$Model->alias][$this->settings[$Model->alias]['primaryKey']]);
 
-			if($this->settings[$Model->alias]['lastmod'] !== FALSE) {
+			if ($this->settings[$Model->alias]['lastmod'] !== false) {
 				$sitemapData[$key]['lastmod'] = $data[$Model->alias][$this->settings[$Model->alias]['lastmod']];
 			}
 
-			if($this->settings[$Model->alias]['changefreq'] !== FALSE) {
+			if ($this->settings[$Model->alias]['changefreq'] !== false) {
 				$sitemapData[$key]['changefreq'] = $this->settings[$Model->alias]['changefreq'];
 			}
 
-			if($this->settings[$Model->alias]['priority'] !== FALSE) {
+			if ($this->settings[$Model->alias]['priority'] !== false) {
 				$sitemapData[$key]['priority'] = $this->settings[$Model->alias]['priority'];
 			}
 		}
 
 		return $sitemapData;
-
 	}
+
 }
-?>
