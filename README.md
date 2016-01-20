@@ -1,6 +1,6 @@
 # CakePHP-Sitemap
 
-A CakePHP Plugin for adding automatic XML and HTML Sitemaps to an CakePHP app
+A CakePHP 2.x Plugin for adding automatic XML and HTML Sitemaps to an CakePHP app
 
 
 [![Latest Version](https://img.shields.io/github/release/loadsys/CakePHP-Sitemap.svg?style=flat-square)](https://github.com/loadsys/CakePHP-Sitemap/releases)
@@ -78,4 +78,4 @@ The Complete Test Suite for the plugin can be run via this command:
 
 ## Copyright ##
 
-[Loadsys Web Strategies](http://www.loadsys.com) 2015
+[Loadsys Web Strategies](http://www.loadsys.com) 2016
