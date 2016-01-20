@@ -59,6 +59,10 @@ public $actsAs = array(
 
 ## Contributing
 
+### Code of Conduct
+
+This project has adopted the Contributor Covenant as its [code of conduct](CODE_OF_CONDUCT.md). All contributors are expected to adhere to this code. [Translations are available](http://contributor-covenant.org/).
+
 ### Reporting Issues
 
 Please use [GitHub Isuses](https://github.com/loadsys/CakePHP-Sitemap/issues) for listing any known defects or issues.
