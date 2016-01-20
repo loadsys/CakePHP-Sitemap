@@ -1,0 +1,25 @@
+# Composer
+/composer.lock
+
+# CakePHP 3
+/vendor/*
+/tmp/*
+/logs/*
+
+# CakePHP 2
+/app/tmp/*
+/vendors/*
+
+# OS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
