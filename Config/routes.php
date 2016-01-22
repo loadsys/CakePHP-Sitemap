@@ -1,11 +1,6 @@
 <?php
+use Cake\Routing\Router;
 
-// ensure we can parze xml files
-Router::parseExtensions('xml');
-
-// connect the /sitemap to the sitemap controller
-Router::connect('/sitemap', array(
-	'plugin' => 'sitemap',
-	'controller' => 'sitemaps',
-	'action' => 'display'
-));
+Router::plugin('Sitemap', function ($routes) {
+    $routes->fallbacks('DashedRoute');
+});

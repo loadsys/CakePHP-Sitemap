@@ -1,104 +1,71 @@
 <?php
-class SitemapBehavior extends ModelBehavior {
+/**
+ * Behavior for loading Sitemap records
+ */
+namespace Sitemap\Model\Behavior;
+
+use Cake\ORM\Behavior;
+use Cake\ORM\Table;
+use Cake\ORM\Query;
+use Cake\Routing\Router;
+
+/**
+ * \Sitemap\Model\Behavior\SitemapBehavior
+ */
+class SitemapBehavior extends Behavior {
+	/**
+	 * Default configuration.
+	 *
+	 * @var array
+	 */
+	protected $_defaultConfig = [
+		'cacheConfigKey' => 'default',
+		'lastmod' => 'modified',
+		'changefreq' => 'daily',
+		'priority' => '0.9',
+		'conditions' => [],
+		'order' => [],
+		'implementedMethods' => [
+			'getUrl' => 'returnUrlForEntity',
+		],
+		'implementedFinders' => [
+			'forSitemap' => 'findSitemapRecords',
+		],
+	];
 
 	/**
-	 * _CacheKey - Cache Key
+	 * Constructor hook method.
 	 *
-	 * @var string
+	 * Implement this method to avoid having to overwrite
+	 * the constructor and call parent.
+	 *
+	 * @param array $config The configuration settings provided to this behavior.
+	 * @return void
 	 */
-	protected $_CacheKey = 'Sitemap.ModelData.';
+	public function initialize(array $config) {
+		parent::initialize($config);
+	}
 
-	/**
-	 * setup
-	 *
-	 * @param  Model  $Model    [description]
-	 * @param  array  $settings [description]
-	 * @return [type]           [description]
-	 */
-	public function setup(Model $Model, $settings = array()) {
-		if (!isset($this->settings[$Model->alias])) {
-			$this->settings[$Model->alias] = array(
-				'primaryKey' => 'id',
-				'loc' => 'buildUrl',
-				'lastmod' => 'modified',
-				'changefreq' => 'daily',
-				'priority' => '0.9',
-				'conditions' => array(),
-			);
-		}
-		$this->settings[$Model->alias] = array_merge($this->settings[$Model->alias], $settings);
+	public function returnUrlForEntity() {
+		return Router::url(
+			[
+				'controller' => 'Post', 'action' => 'view', 'something'
+			],
+			true
+		);
 	}
 
 	/**
-	 * buildUrl - basic build URL function for the model behavior, basic URL using action => 'view'
+	 * Find the Sitemap Records for a Table.
 	 *
-	 * @return [type] [description]
+	 * @param Query $query The Query being modified.
+	 * @param array $options The array of options for the find.
+	 * @return Query Returns the modified Query object.
 	 */
-	public function buildUrl(Model $Model, $primaryKey) {
-		return Router::url(array('plugin' => NULL, 'controller' => Inflector::tableize($Model->name), 'action' => 'view', $primaryKey), TRUE);
-	}
-
-	/**
-	 * generateSitemapData - generate the sitemap data, attempting to hit the cache for this data
-	 *
-	 * @param  Model  $Model [description]
-	 * @return [type]        [description]
-	 */
-	public function generateSitemapData(Model $Model) {
-
-		//Attempt to hit the Model Cache for data
-		$sitemapData = Cache::read($this->_CacheKey . $Model->name);
-
-		if ($sitemapData !== false) {
-			return $sitemapData;
-		}
-
-		//Load the Model Data
-		$modelData = $Model->find('all', array(
-			'conditions' => $this->settings[$Model->alias]['conditions'],
-			'recursive' => -1,
-		));
-
-		//Build the sitemap elements
-		$sitemapData = $this->_buildSitemapElements($Model, $modelData);
-
-		//Write to the Cache
-		Cache::write($this->_CacheKey . $Model->name, $sitemapData);
-
-		return $sitemapData;
-	}
-
-	/**
-	 * _buildSitemapElements - build the sitemap elements
-	 *
-	 * @param  Model  $Model     [description]
-	 * @param  [type] $modelData [description]
-	 * @return [type]            [description]
-	 */
-	protected function _buildSitemapElements(Model $Model, $modelData) {
-		$sitemapData = array();
-
-		//Loop through the Model data and create the array of elements for the sitemap
-		foreach($modelData as $key => $data) {
-			$sitemapData[$key] = array();
-
-			$sitemapData[$key]['loc'] = call_user_func(array($Model, $this->settings[$Model->alias]['loc']), $data[$Model->alias][$this->settings[$Model->alias]['primaryKey']]);
-
-			if($this->settings[$Model->alias]['lastmod'] !== FALSE) {
-				$sitemapData[$key]['lastmod'] = $data[$Model->alias][$this->settings[$Model->alias]['lastmod']];
-			}
-
-			if($this->settings[$Model->alias]['changefreq'] !== FALSE) {
-				$sitemapData[$key]['changefreq'] = $this->settings[$Model->alias]['changefreq'];
-			}
-
-			if($this->settings[$Model->alias]['priority'] !== FALSE) {
-				$sitemapData[$key]['priority'] = $this->settings[$Model->alias]['priority'];
-			}
-		}
-
-		return $sitemapData;
-
+	public function findSitemapRecords(Query $query, array $options) {
+		$query
+			->conditions($this->_config['conditions'])
+			->cache("sitemap_{$query->repository()->alias()}", $this->_config['cacheConfigKey'])
+			->order($this->_config['order']);
 	}
 }
-?>
