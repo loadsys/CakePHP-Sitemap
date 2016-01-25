@@ -5,6 +5,7 @@
 namespace Sitemap\Model\Behavior;
 
 use Cake\ORM\Behavior;
+use Cake\Orm\Entity;
 use Cake\ORM\Table;
 use Cake\ORM\Query;
 use Cake\Routing\Router;
@@ -46,10 +47,17 @@ class SitemapBehavior extends Behavior {
 		parent::initialize($config);
 	}
 
-	public function returnUrlForEntity() {
+	/**
+	 * Return the URL for the primary view action for an Entity.
+	 *
+	 * @return string Returns the URL string.
+	 */
+	public function returnUrlForEntity(Entity $entity) {
 		return Router::url(
 			[
-				'controller' => 'Post', 'action' => 'view', 'something'
+				'controller' => $this->_table->registryAlias(),
+				'action' => 'view',
+				$entity->{$this->_table->primaryKey()},
 			],
 			true
 		);
@@ -64,8 +72,10 @@ class SitemapBehavior extends Behavior {
 	 */
 	public function findSitemapRecords(Query $query, array $options) {
 		$query
-			->conditions($this->_config['conditions'])
+			->where($this->_config['conditions'])
 			->cache("sitemap_{$query->repository()->alias()}", $this->_config['cacheConfigKey'])
 			->order($this->_config['order']);
+
+		return $query;
 	}
 }

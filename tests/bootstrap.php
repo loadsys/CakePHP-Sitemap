@@ -1,93 +1,83 @@
 <?php
-/**
- * Ensure tests can be run in all cases.
- */
-
-use Cake\Cache\Cache;
-use Cake\Core\Configure;
-use Cake\Datasource\ConnectionManager;
-use Cake\I18n\I18n;
-use Cake\Log\Log;
-require_once 'vendor/autoload.php';
-if (!defined('DS')) {
-    define('DS', DIRECTORY_SEPARATOR);
+define('DS', DIRECTORY_SEPARATOR);
+if (!defined('WINDOWS')) {
+	if (DS == '\\' || substr(PHP_OS, 0, 3) === 'WIN') {
+		define('WINDOWS', true);
+	} else {
+		define('WINDOWS', false);
+	}
 }
+
 define('ROOT', dirname(__DIR__));
-define('APP_DIR', 'TestApp');
-define('TMP', sys_get_temp_dir() . DS);
+define('TMP', ROOT . DS . 'tmp' . DS);
 define('LOGS', TMP . 'logs' . DS);
 define('CACHE', TMP . 'cache' . DS);
-define('SESSIONS', TMP . 'sessions' . DS);
-define('CAKE_CORE_INCLUDE_PATH', ROOT);
+define('APP', sys_get_temp_dir());
+define('APP_DIR', 'src');
+define('CAKE_CORE_INCLUDE_PATH', ROOT . '/vendor/cakephp/cakephp');
 define('CORE_PATH', CAKE_CORE_INCLUDE_PATH . DS);
-define('CAKE', CORE_PATH . 'src' . DS);
-define('CORE_TESTS', CORE_PATH . 'tests' . DS);
-define('CORE_TEST_CASES', CORE_TESTS . 'TestCase');
-define('TEST_APP', CORE_TESTS . 'test_app' . DS);
-// Point app constants to the test app.
-define('APP', TEST_APP . 'TestApp' . DS);
-define('WWW_ROOT', TEST_APP . 'webroot' . DS);
-define('CONFIG', TEST_APP . 'config' . DS);
-//@codingStandardsIgnoreStart
-@mkdir(LOGS);
-@mkdir(SESSIONS);
-@mkdir(CACHE);
-@mkdir(CACHE . 'views');
-@mkdir(CACHE . 'models');
-//@codingStandardsIgnoreEnd
-//require_once CORE_PATH . 'config/bootstrap.php';
+define('CAKE', CORE_PATH . APP_DIR . DS);
+
+define('WWW_ROOT', ROOT . DS . 'webroot' . DS);
+define('CONFIG', dirname(__FILE__) . DS . 'config' . DS);
+
+ini_set('intl.default_locale', 'de-DE');
+
+require ROOT . '/vendor/autoload.php';
+require CORE_PATH . 'config/bootstrap.php';
+
+Cake\Core\Configure::write('App', [
+		'namespace' => 'App',
+		'encoding' => 'UTF-8']);
+Cake\Core\Configure::write('debug', true);
+
 date_default_timezone_set('UTC');
 mb_internal_encoding('UTF-8');
-Configure::write('debug', true);
-Configure::write('App', [
-    'namespace' => 'App',
-    'encoding' => 'UTF-8',
-    'base' => false,
-    'baseUrl' => false,
-    'dir' => APP_DIR,
-    'webroot' => 'webroot',
-    'wwwRoot' => WWW_ROOT,
-    'fullBaseUrl' => 'http://localhost',
-    'imageBaseUrl' => 'img/',
-    'jsBaseUrl' => 'js/',
-    'cssBaseUrl' => 'css/',
-    'paths' => [
-        'plugins' => [TEST_APP . 'Plugin' . DS],
-        'templates' => [APP . 'Template' . DS],
-        'locales' => [APP . 'Locale' . DS],
-    ]
-]);
-Cache::config([
-    '_cake_core_' => [
-        'engine' => 'File',
-        'prefix' => 'cake_core_',
-        'serialize' => true
-    ],
-    '_cake_model_' => [
-        'engine' => 'File',
-        'prefix' => 'cake_model_',
-        'serialize' => true
-    ]
-]);
+
+$Tmp = new Cake\Filesystem\Folder(TMP);
+$Tmp->create(TMP . 'cache/models', 0770);
+$Tmp->create(TMP . 'cache/persistent', 0770);
+$Tmp->create(TMP . 'cache/views', 0770);
+
+$cache = [
+	'default' => [
+		'engine' => 'File',
+		'path' => CACHE
+	],
+	'_cake_core_' => [
+		'className' => 'File',
+		'prefix' => 'sitemap_',
+		'path' => CACHE . 'persistent/',
+		'serialize' => true,
+		'duration' => '+10 seconds'
+	],
+	'_cake_model_' => [
+		'className' => 'File',
+		'prefix' => 'sitemap_',
+		'path' => CACHE . 'models/',
+		'serialize' => 'File',
+		'duration' => '+10 seconds'
+	]
+];
+
+Cake\Cache\Cache::config($cache);
+
+Cake\Core\Plugin::load('Sitemap', ['path' => ROOT . DS, 'routes' => true]);
+
 // Ensure default test connection is defined
-if (!getenv('db_dsn')) {
-    putenv('db_dsn=sqlite:///:memory:');
+if (!getenv('db_class')) {
+	putenv('db_class=Cake\Database\Driver\Sqlite');
+	putenv('db_dsn=sqlite::memory:');
 }
-ConnectionManager::config('test', ['url' => getenv('db_dsn')]);
-Configure::write('Session', [
-    'defaults' => 'php'
+
+Cake\Datasource\ConnectionManager::config('test', [
+	'className' => 'Cake\Database\Connection',
+	'driver' => getenv('db_class'),
+	'dsn' => getenv('db_dsn'),
+	'database' => getenv('db_database'),
+	'username' => getenv('db_username'),
+	'password' => getenv('db_password'),
+	'timezone' => 'UTC',
+	'quoteIdentifiers' => true,
+	'cacheMetadata' => true,
 ]);
-Log::config([
-    'debug' => [
-        'engine' => 'Cake\Log\Engine\FileLog',
-        'levels' => ['notice', 'info', 'debug'],
-        'file' => 'debug',
-    ],
-    'error' => [
-        'engine' => 'Cake\Log\Engine\FileLog',
-        'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
-        'file' => 'error',
-    ]
-]);
-Carbon\Carbon::setTestNow(Carbon\Carbon::now());
-ini_set('intl.default_locale', 'en_US');

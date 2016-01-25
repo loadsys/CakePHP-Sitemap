@@ -1,11 +1,25 @@
 <?php
-namespace App\Test\TestCase\Model\Behavior;
+/**
+ * Tests for the Sitemap Behavior class.
+ */
+namespace Sitemap\Test\TestCase\Model\Behavior;
 
-use App\Model\Behavior\SitemapBehavior;
+use Cake\Datasource\ConnectionManager;
 use Cake\TestSuite\TestCase;
+use Cake\ORM\Table;
+use Cake\ORM\TableRegistry;
+use Sitemap\Model\Behavior\SitemapBehavior;
 
 /**
- * \App\Test\TestCase\Model\Behavior\SitemapBehaviorTest
+ * \Siteamp\Test\TestCase\Model\Behavior\TestSitemapBehavior
+ */
+class TestSitemapBehavior extends SitemapBehavior {
+	public $_config;
+	public $_table;
+}
+
+/**
+ * \Siteamp\Test\TestCase\Model\Behavior\SitemapBehaviorTest
  */
 class SitemapBehaviorTest extends TestCase {
 	/**
@@ -14,7 +28,7 @@ class SitemapBehaviorTest extends TestCase {
 	 * @var array
 	 */
 	public $fixtures = [
-		'sitemap.pages',
+		'plugin.sitemap.pages',
 	];
 	/**
 	 * setUp method
@@ -23,7 +37,10 @@ class SitemapBehaviorTest extends TestCase {
 	 */
 	public function setUp() {
 		parent::setUp();
-		$this->Sitemap = new SitemapBehavior();
+
+		$this->Pages = TableRegistry::get('Pages');
+		$sitemapConfig = [];
+		$this->Pages->addBehavior('Sitemap.Sitemap', $sitemapConfig);
 	}
 
 	/**
@@ -32,18 +49,65 @@ class SitemapBehaviorTest extends TestCase {
 	 * @return void
 	 */
 	public function tearDown() {
-		unset($this->Sitemap);
+		unset($this->Pages);
 
 		parent::tearDown();
 	}
 
 	/**
-	 * Test initial setup
+	 * Test initial setup, essentially verify configuartion is passing in correctly.
 	 *
 	 * @return void
 	 */
 	public function testInitialization() {
-		$this->markTestIncomplete('Not implemented yet.');
+		$sitemapConfig = [];
+		$configOut = [
+			'cacheConfigKey' => 'default',
+			'lastmod' => 'modified',
+			'changefreq' => 'daily',
+			'priority' => '0.9',
+			'conditions' => [],
+			'order' => [],
+			'implementedMethods' => [
+				'getUrl' => 'returnUrlForEntity',
+			],
+			'implementedFinders' => [
+				'forSitemap' => 'findSitemapRecords',
+			],
+		];
+
+		$Sitemap = new TestSitemapBehavior($this->Pages, $sitemapConfig);
+		$this->assertEquals(
+			$configOut,
+			$Sitemap->_config,
+			'On an empty configuration array, the default configuration should be equal'
+		);
+
+		$sitemapConfig = [
+			'cacheConfigKey' => 'canary',
+			'lastmod' => 'lastmoddate',
+		];
+		$configOut = [
+			'cacheConfigKey' => 'canary',
+			'lastmod' => 'lastmoddate',
+			'changefreq' => 'daily',
+			'priority' => '0.9',
+			'conditions' => [],
+			'order' => [],
+			'implementedMethods' => [
+				'getUrl' => 'returnUrlForEntity',
+			],
+			'implementedFinders' => [
+				'forSitemap' => 'findSitemapRecords',
+			],
+		];
+
+		$Sitemap = new TestSitemapBehavior($this->Pages, $sitemapConfig);
+		$this->assertEquals(
+			$configOut,
+			$Sitemap->_config,
+			'On an valid configuration array, the configuration should be updated to match.'
+		);
 	}
 
 	/**
@@ -52,15 +116,68 @@ class SitemapBehaviorTest extends TestCase {
 	 * @return void
 	 */
 	public function testReturnUrlForEntity() {
-		$this->markTestIncomplete('Not implemented yet.');
+		$id = 'canary';
+		$entity = new \Cake\Orm\Entity([
+			'id' => $id,
+		]);
+		$this->assertEquals(
+			"/pages/view/{$id}",
+			$this->Pages->getUrl($entity),
+			'The method getUrl should return a valid url string for the passed entity.'
+		);
 	}
 
 	/**
 	 * Test findSitemapRecords method
 	 *
+	 * @param array $sitemapConfig The Configs for the Sitemap Behavior.
+	 * @param int $expectedCount The expected number of returning results from the find.
 	 * @return void
+	 * @dataProvider providerFindSitemapRecords
 	 */
-	public function testFindSitemapRecords() {
-		$this->markTestIncomplete('Not implemented yet.');
+	public function testFindSitemapRecords($sitemapConfig, $expectedCount) {
+		$this->Pages->removeBehavior('Sitemap');
+		$this->Pages->addBehavior('Sitemap.Sitemap', $sitemapConfig);
+
+		$query = $this->Pages->find('forSitemap');
+		$count = $query->count();
+		$this->assertEquals(
+			$expectedCount,
+			$count,
+			"The count of the pages should be equal to {$expectedCount}"
+		);
+	}
+
+	public function providerFindSitemapRecords() {
+		return [
+			'Empty Config Options' => [
+				[],
+				5,
+			],
+			'Non Conditional Config Options' => [
+				[
+					'lastmod' => 'modified_date'
+				],
+				5,
+			],
+
+			'Is Indexed TRUE Config Options' => [
+				[
+					'conditions' => [
+						'is_indexed' => true,
+					]
+				],
+				4,
+			],
+
+			'Is Indexed FALSE Config Options' => [
+				[
+					'conditions' => [
+						'is_indexed' => false,
+					]
+				],
+				1,
+			],
+		];
 	}
 }
