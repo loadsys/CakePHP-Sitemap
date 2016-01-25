@@ -5,6 +5,7 @@
 namespace Sitemap\Test\TestCase\Model\Behavior;
 
 use Cake\Datasource\ConnectionManager;
+use Cake\Orm\Entity;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;
@@ -117,7 +118,7 @@ class SitemapBehaviorTest extends TestCase {
 	 */
 	public function testReturnUrlForEntity() {
 		$id = 'canary';
-		$entity = new \Cake\Orm\Entity([
+		$entity = new Entity([
 			'id' => $id,
 		]);
 		$this->assertEquals(
