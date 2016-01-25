@@ -5,7 +5,7 @@
 namespace Sitemap\Test\TestCase\Model\Behavior;
 
 use Cake\Datasource\ConnectionManager;
-use Cake\Orm\Entity;
+use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\TestCase;

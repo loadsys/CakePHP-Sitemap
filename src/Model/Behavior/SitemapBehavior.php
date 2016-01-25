@@ -5,7 +5,7 @@
 namespace Sitemap\Model\Behavior;
 
 use Cake\ORM\Behavior;
-use Cake\Orm\Entity;
+use Cake\ORM\Entity;
 use Cake\ORM\Query;
 use Cake\ORM\Table;
 use Cake\Routing\Router;
