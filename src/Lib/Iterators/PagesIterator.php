@@ -1,15 +1,15 @@
 <?php
-App::uses('ExtFilteredDirIterator', 'Sitemap.Lib/Iterators');
-
 /**
- * PagesIterator
- *
  * Uses an ExtFilteredDirIterator to create an array of filtered records from
  * a directory's contents, and formats the results as a Cake-Model-like array
  * record.
  */
-class PagesIterator extends ExtFilteredDirIterator {
+namespace Sitemap\Lib\Iterators;
 
+/**
+ * \Sitemap\Lib\Iterators\PagesIterator
+ */
+class PagesIterator extends ExtFilteredDirIterator {
 	/**
 	 * A list of file extensions that will be passed through the Iterator.
 	 * Files not ending in one of these extensions will be excluded from the

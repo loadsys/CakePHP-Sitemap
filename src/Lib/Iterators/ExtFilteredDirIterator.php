@@ -6,8 +6,14 @@
  * Skips the ./ and ../ entries, and any file that does not end in an extension
  * in ::allowed.
  */
-class ExtFilteredDirIterator extends FilterIterator {
+namespace Sitemap\Lib\Iterators;
 
+use FilterIterator;
+
+/**
+ * \Sitemap\Lib\Iterators\ExtFilteredDirIterator
+ */
+class ExtFilteredDirIterator extends FilterIterator {
 	/**
 	 * A list of file extensions that will be passed through the Iterator.
 	 * Files not ending in one of these extensions will be excluded from the

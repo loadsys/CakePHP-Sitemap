@@ -5,9 +5,9 @@
 namespace Sitemap\Test\TestCase\Model\Behavior;
 
 use Cake\Datasource\ConnectionManager;
-use Cake\TestSuite\TestCase;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
+use Cake\TestSuite\TestCase;
 use Sitemap\Model\Behavior\SitemapBehavior;
 
 /**
