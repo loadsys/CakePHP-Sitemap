@@ -18,8 +18,8 @@ require ROOT . '/vendor/autoload.php';
 require CORE_PATH . 'config/bootstrap.php';
 
 Cake\Core\Configure::write('App', [
-		'namespace' => 'App',
-		'encoding' => 'UTF-8']);
+	'namespace' => 'App',
+	'encoding' => 'UTF-8']);
 Cake\Core\Configure::write('debug', true);
 
 date_default_timezone_set('UTC');
