@@ -26,7 +26,7 @@ class SitemapBehavior extends Behavior {
 		'priority' => '0.9',
 		'conditions' => [],
 		'order' => [],
-		'fields' => '*',
+		'fields' => [],
 		'implementedMethods' => [
 			'getUrl' => 'returnUrlForEntity',
 		],

@@ -69,7 +69,7 @@ class SitemapBehaviorTest extends TestCase {
 			'priority' => '0.9',
 			'conditions' => [],
 			'order' => [],
-			'fields' => '*',
+			'fields' => [],
 			'implementedMethods' => [
 				'getUrl' => 'returnUrlForEntity',
 			],
