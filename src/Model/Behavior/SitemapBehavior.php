@@ -36,6 +36,18 @@ class SitemapBehavior extends Behavior {
 	];
 
 	/**
+	 * Constructor
+	 *
+	 * Merges config with the default and store in the config property
+	 *
+	 * @param \Cake\ORM\Table $table The table this behavior is attached to.
+	 * @param array $config The config for this behavior.
+	 */
+	public function __construct(Table $table, array $config = []) {
+		parent::__construct($table, $config);
+	}
+
+	/**
 	 * Constructor hook method.
 	 *
 	 * Implement this method to avoid having to overwrite
@@ -74,10 +86,47 @@ class SitemapBehavior extends Behavior {
 	public function findSitemapRecords(Query $query, array $options) {
 		$query
 			->where($this->_config['conditions'])
-			->select($this->_config['fields'])
 			->cache("sitemap_{$query->repository()->alias()}", $this->_config['cacheConfigKey'])
-			->order($this->_config['order']);
+			->order($this->_config['order'])
+			->formatResults(function ($results) {
+				return $this->mapResults($results);
+			});
+
+		if (!empty($this->_config['fields'])) {
+			$query->select($this->_config['fields']);
+		}
 
 		return $query;
+	}
+
+	/**
+	 * Format Results method to take the ResultSetInterface and map it to add
+	 * calculated fields for the Sitemap.
+	 *
+	 * @param \Cake\Datasource\ResultSetInterface $results The results of a Query
+	 * operation.
+	 * @return \Cake\Collection\CollectionInterface Returns the modified collection
+	 * of Results.
+	 */
+	public function mapResults(\Cake\Datasource\ResultSetInterface $results) {
+		debug($results);
+		return $results->map(function ($entity) {
+			debug($results);
+			return $this->mapEntity($entity);
+		});
+	}
+
+	/**
+	 * Modify an entity with new `_` fields for the Sitemap display.
+	 *
+	 * @param \Cake\Orm\Entity $entity The entity being modified.
+	 * @return Entity
+	 */
+	public function mapEntity(Entity $entity) {
+		$entity['_loc'] = $this->_table->getUrl($entity);
+		$entity['_lastmod'] = $entity->{$this->_config['lastmod']};
+		$entity['_changefreq'] = $this->_config['changefreq'];
+		$entity['_priority'] = $this->_config['priority'];
+		return $entity;
 	}
 }

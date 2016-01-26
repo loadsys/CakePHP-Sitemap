@@ -189,4 +189,75 @@ class SitemapBehaviorTest extends TestCase {
 			],
 		];
 	}
+
+	/**
+	 * Test the mapEntity method.
+	 *
+	 * @return void
+	 */
+	public function testMapEntity() {
+		$pageId = '3b65a356-6df8-11e5-b2cc-000c29a33c4c';
+		$sitemapConfig = [];
+		$Sitemap = new TestSitemapBehavior($this->Pages, $sitemapConfig);
+
+		$entity = $this->Pages->get($pageId);
+		$entity = $Sitemap->mapEntity($entity);
+		$this->assertEquals(
+			"/pages/view/{$pageId}",
+			$entity->_loc,
+			'The _loc field should be set to our standard url'
+		);
+
+		$this->assertEquals(
+			new \Cake\I18n\Time('2015-10-08 21:27:04'),
+			$entity->_lastmod,
+			'The _loc field should be set to our standard url'
+		);
+
+		$this->assertEquals(
+			"daily",
+			$entity->_changefreq,
+			'The _changefreq field should be set to our standard daily'
+		);
+
+		$this->assertEquals(
+			"0.9",
+			$entity->_priority,
+			'The _priority field should be set to our standard 0.9'
+		);
+		unset($Sitemap);
+
+		// test with a modified Sitemap Configuration
+		$sitemapConfig = [
+			'priority' => '0.1',
+			'changefreq' => 'weekly',
+		];
+		$Sitemap = new TestSitemapBehavior($this->Pages, $sitemapConfig);
+
+		$entity = $this->Pages->get($pageId);
+		$entity = $Sitemap->mapEntity($entity);
+		$this->assertEquals(
+			"/pages/view/{$pageId}",
+			$entity->_loc,
+			'The _loc field should be set to our standard url'
+		);
+
+		$this->assertEquals(
+			new \Cake\I18n\Time('2015-10-08 21:27:04'),
+			$entity->_lastmod,
+			'The _loc field should be set to our standard url'
+		);
+
+		$this->assertEquals(
+			"weekly",
+			$entity->_changefreq,
+			'The _changefreq field should be set to our modified weekly'
+		);
+
+		$this->assertEquals(
+			"0.1",
+			$entity->_priority,
+			'The _priority field should be set to our modified 0.1'
+		);
+	}
 }
