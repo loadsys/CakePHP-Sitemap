@@ -69,6 +69,7 @@ class SitemapBehaviorTest extends TestCase {
 			'priority' => '0.9',
 			'conditions' => [],
 			'order' => [],
+			'fields' => '*',
 			'implementedMethods' => [
 				'getUrl' => 'returnUrlForEntity',
 			],
@@ -87,6 +88,7 @@ class SitemapBehaviorTest extends TestCase {
 		$sitemapConfig = [
 			'cacheConfigKey' => 'canary',
 			'lastmod' => 'lastmoddate',
+			'fields' => ['id', 'modified'],
 		];
 		$configOut = [
 			'cacheConfigKey' => 'canary',
@@ -95,6 +97,7 @@ class SitemapBehaviorTest extends TestCase {
 			'priority' => '0.9',
 			'conditions' => [],
 			'order' => [],
+			'fields' => ['id', 'modified'],
 			'implementedMethods' => [
 				'getUrl' => 'returnUrlForEntity',
 			],
@@ -149,6 +152,11 @@ class SitemapBehaviorTest extends TestCase {
 		);
 	}
 
+	/**
+	 * DataProvider for testFindSitemapRecords.
+	 *
+	 * @return array Data inputs for testFindSitemapRecords.
+	 */
 	public function providerFindSitemapRecords() {
 		return [
 			'Empty Config Options' => [

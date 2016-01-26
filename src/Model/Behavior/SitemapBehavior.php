@@ -26,6 +26,7 @@ class SitemapBehavior extends Behavior {
 		'priority' => '0.9',
 		'conditions' => [],
 		'order' => [],
+		'fields' => '*',
 		'implementedMethods' => [
 			'getUrl' => 'returnUrlForEntity',
 		],
@@ -73,6 +74,7 @@ class SitemapBehavior extends Behavior {
 	public function findSitemapRecords(Query $query, array $options) {
 		$query
 			->where($this->_config['conditions'])
+			->select($this->_config['fields'])
 			->cache("sitemap_{$query->repository()->alias()}", $this->_config['cacheConfigKey'])
 			->order($this->_config['order']);
 
