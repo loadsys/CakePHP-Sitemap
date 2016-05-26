@@ -18,7 +18,7 @@
 ## Installation
 
 ```bash
-$ composer require loadsys/cakephp-sitemap:@TODO
+$ composer require loadsys/cakephp-sitemap
 ```
 
 In your `config/bootstrap.php` file, add:
@@ -27,11 +27,25 @@ In your `config/bootstrap.php` file, add:
 Plugin::load('Sitemap', ['bootstrap' => false, 'routes' => true]);
 ```
 
+OR
+
+```php
+bin/cake plugin load Sitemap
+```
 
 ## Usage
 
-@TODO
+* Add list of tables to display Sitemap records via an array at `Sitemap.tables`
 
+```php
+Configure::write('Sitemap.tables', [
+	'Pages',
+	'Sites',
+	'Camps',
+]);
+```
+
+* Add the `Sitemap.Sitemap` Behavior to each table as well
 
 ## Contributing
 
