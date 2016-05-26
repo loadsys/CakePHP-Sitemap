@@ -52,8 +52,7 @@ class SitemapsControllerTestCase extends IntegrationTestCase {
 	 * @return void
 	 */
 	public function setupSession() {
-		$this->session([
-		]);
+		$this->session([]);
 	}
 
 	/**
