@@ -18,7 +18,7 @@
 ## Installation
 
 ```bash
-$ composer require loadsys/cakephp-sitemap
+$ composer require loadsys/cakephp_sitemap
 ```
 
 In your `config/bootstrap.php` file, add:
