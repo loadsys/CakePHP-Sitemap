@@ -47,6 +47,53 @@ Configure::write('Sitemap.tables', [
 
 * Add the `Sitemap.Sitemap` Behavior to each table as well
 
+```php
+$this->addBehavior('Sitemap.Sitemap');
+```
+
+### Configuration
+
+* Default configuration options for the `Sitemap` Behavior is:
+
+```php
+'cacheConfigKey' => 'default',
+'lastmod' => 'modified',
+'changefreq' => 'daily',
+'priority' => '0.9',
+'conditions' => [],
+'order' => [],
+'fields' => [],
+'implementedMethods' => [
+	'getUrl' => 'returnUrlForEntity',
+],
+'implementedFinders' => [
+	'forSitemap' => 'findSitemapRecords',
+],
+```
+
+* To modify these options for instance to change the `changefreq` when listing records, updated the `addBehavior` method call for the `Table` in question like so:
+
+```php
+$this->addBehavior('Sitemap.Sitemap', ['changefreq' => 'weekly']);
+```
+
+* To customize the url generated for each record create a method named `getUrl` in the matching `Table` class.
+
+```
+public function getUrl(\App\Model\Entity $entity) {
+	return \Cake\Routing\Router::url(
+		[
+			'prefix' => false,
+			'plugin' => false,
+			'controller' => $this->registryAlias(),
+			'action' => 'display',
+			$entity->display_id,
+		],
+		true
+	);
+}
+```
+
 ## Contributing
 
 ### Code of Conduct

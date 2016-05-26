@@ -165,7 +165,7 @@ class SitemapBehaviorTest extends TestCase {
 			],
 			'Non Conditional Config Options' => [
 				[
-					'lastmod' => 'modified_date'
+					'lastmod' => 'modified_date',
 				],
 				5,
 			],
@@ -174,7 +174,7 @@ class SitemapBehaviorTest extends TestCase {
 				[
 					'conditions' => [
 						'is_indexed' => true,
-					]
+					],
 				],
 				4,
 			],
@@ -183,7 +183,7 @@ class SitemapBehaviorTest extends TestCase {
 				[
 					'conditions' => [
 						'is_indexed' => false,
-					]
+					],
 				],
 				1,
 			],

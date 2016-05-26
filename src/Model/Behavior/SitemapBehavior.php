@@ -109,9 +109,7 @@ class SitemapBehavior extends Behavior {
 	 * of Results.
 	 */
 	public function mapResults(\Cake\Datasource\ResultSetInterface $results) {
-		debug($results);
 		return $results->map(function ($entity) {
-			debug($results);
 			return $this->mapEntity($entity);
 		});
 	}

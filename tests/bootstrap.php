@@ -19,7 +19,8 @@ require CORE_PATH . 'config/bootstrap.php';
 
 Cake\Core\Configure::write('App', [
 	'namespace' => 'App',
-	'encoding' => 'UTF-8']);
+	'encoding' => 'UTF-8',
+]);
 Cake\Core\Configure::write('debug', true);
 
 date_default_timezone_set('UTC');
@@ -33,22 +34,22 @@ $Tmp->create(TMP . 'cache/views', 0770);
 $cache = [
 	'default' => [
 		'engine' => 'File',
-		'path' => CACHE
+		'path' => CACHE,
 	],
 	'_cake_core_' => [
 		'className' => 'File',
 		'prefix' => 'sitemap_',
 		'path' => CACHE . 'persistent/',
 		'serialize' => true,
-		'duration' => '+10 seconds'
+		'duration' => '+10 seconds',
 	],
 	'_cake_model_' => [
 		'className' => 'File',
 		'prefix' => 'sitemap_',
 		'path' => CACHE . 'models/',
 		'serialize' => 'File',
-		'duration' => '+10 seconds'
-	]
+		'duration' => '+10 seconds',
+	],
 ];
 
 Cake\Cache\Cache::config($cache);
