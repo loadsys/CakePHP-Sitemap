@@ -6,7 +6,7 @@
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
 [![Total Downloads](https://img.shields.io/packagist/dt/loadsys/cakephp_sitemap.svg?style=flat-square)](https://packagist.org/packages/loadsys/cakephp_sitemap)
 
-The Sitemap provides a mechanism for display Sitemap style information for a set of Tables that CakePHP has access to.
+The Sitemap provides a mechanism for displaying Sitemap style information (the url, change frequency, priority and last modified datetime) for a set of Tables that CakePHP has access to.
 
 
 ## Requirements
