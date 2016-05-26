@@ -4,9 +4,9 @@
 [![Build Status](https://img.shields.io/travis/loadsys/CakePHP-Sitemap/master.svg?style=flat-square)](https://travis-ci.org/loadsys/CakePHP-Sitemap)
 [![Coverage Status](https://img.shields.io/coveralls/loadsys/CakePHP-Sitemap/master.svg?style=flat-square)](https://coveralls.io/r/loadsys/CakePHP-Sitemap)
 [![Software License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE.md)
-[![Total Downloads](https://img.shields.io/packagist/dt/loadsys/cakephp-sitemap.svg?style=flat-square)](https://packagist.org/packages/loadsys/cakephp-sitemap)
+[![Total Downloads](https://img.shields.io/packagist/dt/loadsys/cakephp_sitemap.svg?style=flat-square)](https://packagist.org/packages/loadsys/cakephp_sitemap)
 
-@TODO
+The Sitemap provides a mechanism for display Sitemap style information for a set of Tables that CakePHP has access to.
 
 
 ## Requirements
