@@ -1,0 +1,15 @@
+# EditorConfig is awesome: http://EditorConfig.org
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+# Tab indentation (no size specified)
+[{*.js,*.php,*.ctp}]
+indent_style = tab
+
+# Matches the exact files package.json and .travis.yml
+[{package.json,.travis.yml,composer.json,*.yaml,*.yml}]
+indent_style = space
+indent_size = 2

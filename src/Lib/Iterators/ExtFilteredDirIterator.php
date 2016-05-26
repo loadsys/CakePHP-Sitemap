@@ -6,8 +6,14 @@
  * Skips the ./ and ../ entries, and any file that does not end in an extension
  * in ::allowed.
  */
-class ExtFilteredDirIterator extends FilterIterator {
+namespace Sitemap\Lib\Iterators;
 
+use FilterIterator;
+
+/**
+ * \Sitemap\Lib\Iterators\ExtFilteredDirIterator
+ */
+class ExtFilteredDirIterator extends FilterIterator {
 	/**
 	 * A list of file extensions that will be passed through the Iterator.
 	 * Files not ending in one of these extensions will be excluded from the
@@ -45,7 +51,7 @@ class ExtFilteredDirIterator extends FilterIterator {
 	 *    - Or if no ::allowed array has been provided (which essentially allows all files and folders.)
 	 *
 	 * @access public
-	 * @return boolean True for all non-dot directories, and files with extensions in $this->allowed.
+	 * @return bool True for all non-dot directories, and files with extensions in $this->allowed.
 	 */
 	public function accept() {
 		$current = parent::current();
@@ -53,9 +59,9 @@ class ExtFilteredDirIterator extends FilterIterator {
 			!$current->isDot()
 			&&
 			(
-				!is_array($this->allowed)  // No extensions defined. Allow everything through.
-				|| in_array($current->getExtension(), $this->allowed)  // Allow if extension is in provided list.
-				|| $current->isDir()  // Allow if entry is a sub-directory.
+				!is_array($this->allowed) // No extensions defined. Allow everything through.
+				|| in_array($current->getExtension(), $this->allowed) // Allow if extension is in provided list.
+				|| $current->isDir() // Allow if entry is a sub-directory.
 			)
 		);
 	}
