@@ -68,6 +68,8 @@ class SitemapBehavior extends Behavior {
 	public function returnUrlForEntity(Entity $entity) {
 		return Router::url(
 			[
+				'plugin' => null,
+				'prefix' => null,
 				'controller' => $this->_table->registryAlias(),
 				'action' => 'view',
 				$entity->{$this->_table->primaryKey()},
