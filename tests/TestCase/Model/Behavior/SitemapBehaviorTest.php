@@ -5,6 +5,7 @@
 namespace Sitemap\Test\TestCase\Model\Behavior;
 
 use Cake\Datasource\ConnectionManager;
+use Cake\I18n\Time;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
@@ -209,7 +210,7 @@ class SitemapBehaviorTest extends TestCase {
 		);
 
 		$this->assertEquals(
-			new \Cake\I18n\Time('2015-10-08 21:27:04'),
+			new Time('2015-10-08 21:27:04'),
 			$entity->_lastmod,
 			'The _loc field should be set to our standard url'
 		);
@@ -243,7 +244,7 @@ class SitemapBehaviorTest extends TestCase {
 		);
 
 		$this->assertEquals(
-			new \Cake\I18n\Time('2015-10-08 21:27:04'),
+			new Time('2015-10-08 21:27:04'),
 			$entity->_lastmod,
 			'The _loc field should be set to our standard url'
 		);

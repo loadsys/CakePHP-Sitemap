@@ -4,6 +4,7 @@
  */
 namespace Sitemap\Model\Behavior;
 
+use Cake\Datasource\ResultSetInterface;
 use Cake\ORM\Behavior;
 use Cake\ORM\Entity;
 use Cake\ORM\Query;
@@ -110,7 +111,7 @@ class SitemapBehavior extends Behavior {
 	 * @return \Cake\Collection\CollectionInterface Returns the modified collection
 	 * of Results.
 	 */
-	public function mapResults(\Cake\Datasource\ResultSetInterface $results) {
+	public function mapResults(ResultSetInterface $results) {
 		return $results->map(function ($entity) {
 			return $this->mapEntity($entity);
 		});
