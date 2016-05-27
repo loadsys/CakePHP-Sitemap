@@ -73,3 +73,5 @@ Cake\Datasource\ConnectionManager::config('test', [
 	'quoteIdentifiers' => true,
 	'cacheMetadata' => true,
 ]);
+
+class_alias('Cake\Controller\Controller', 'App\Controller\AppController');
