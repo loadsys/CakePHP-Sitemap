@@ -25,16 +25,16 @@
 			<?php foreach($dataForKey as $record): ?>
 				<tr>
 					<td>
-						<?= h($record->_loc); ?>
+						<?= h($record->_loc) ?>
 					</td>
 					<td>
-						<?= h($record->_priority); ?>
+						<?= h($record->_priority) ?>
 					</td>
 					<td>
-						<?= h($record->_changefreq); ?>
+						<?= h($record->_changefreq) ?>
 					</td>
 					<td>
-						<?= h($record->_lastmod); ?>
+						<?= h($record->_lastmod) ?>
 					</td>
 				</tr>
 			<?php endforeach; ?>
