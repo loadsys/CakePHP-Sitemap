@@ -4,10 +4,10 @@
  */
 namespace Sitemap\Controller;
 
-use Cake\Controller\Controller;
+use App\Controller\AppController as BaseController;
 
 /**
  * \Sitemap\Controller\AppController
  */
-class AppController extends Controller {
+class AppController extends BaseController {
 }

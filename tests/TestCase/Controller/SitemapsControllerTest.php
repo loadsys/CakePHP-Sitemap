@@ -4,6 +4,7 @@
  */
 namespace Sitemap\Test\TestCase\Controller;
 
+use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 use Sitemap\Controller\SitemapsController;
@@ -81,7 +82,7 @@ class SitemapsControllerTestCase extends IntegrationTestCase {
 	 * @covers \Sitemap\Controller\SitemapsController::index
 	 */
 	public function testIndexWithModels() {
-		\Cake\Core\Configure::write('Sitemap.tables', ['Pages']);
+		Configure::write('Sitemap.tables', ['Pages']);
 		$pagesFindQuery = $this->Pages->find('forSitemap');
 
 		$Controller = $this->getMock(
