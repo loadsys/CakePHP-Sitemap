@@ -17,7 +17,7 @@ The Sitemap provides a mechanism for displaying Sitemap style information (the u
 
 ## Installation
 
-```bash
+```shell
 $ composer require loadsys/cakephp_sitemap
 ```
 
@@ -29,8 +29,8 @@ Plugin::load('Sitemap', ['bootstrap' => false, 'routes' => true]);
 
 OR
 
-```php
-bin/cake plugin load Sitemap
+```shell
+$ bin/cake plugin load Sitemap
 ```
 
 ## Usage
@@ -71,7 +71,7 @@ $this->addBehavior('Sitemap.Sitemap');
 ],
 ```
 
-* To modify these options for instance to change the `changefreq` when listing records, updated the `addBehavior` method call for the `Table` in question like so:
+* To modify these options for instance to change the `changefreq` when listing records, update the `addBehavior` method call for the `Table` in question like so:
 
 ```php
 $this->addBehavior('Sitemap.Sitemap', ['changefreq' => 'weekly']);
@@ -79,8 +79,8 @@ $this->addBehavior('Sitemap.Sitemap', ['changefreq' => 'weekly']);
 
 * To customize the url generated for each record create a method named `getUrl` in the matching `Table` class.
 
-```
-public function getUrl(\App\Model\Entity $entity) {
+```php
+public function getUrl(\Cake\ORM\Entity $entity) {
 	return \Cake\Routing\Router::url(
 		[
 			'prefix' => false,
@@ -93,6 +93,8 @@ public function getUrl(\App\Model\Entity $entity) {
 	);
 }
 ```
+
+* To customize the templates used when displaying the Sitemap, the CakePHP Book provides information regarding [overriding Plugin Templates](http://book.cakephp.org/3.0/en/plugins.html#overriding-plugin-templates-from-inside-your-application).
 
 ## Contributing
 
