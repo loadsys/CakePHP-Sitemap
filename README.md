@@ -71,7 +71,7 @@ $this->addBehavior('Sitemap.Sitemap');
 ],
 ```
 
-* To modify these options for instance to change the `changefreq` when listing records, updated the `addBehavior` method call for the `Table` in question like so:
+* To modify these options for instance to change the `changefreq` when listing records, update the `addBehavior` method call for the `Table` in question like so:
 
 ```php
 $this->addBehavior('Sitemap.Sitemap', ['changefreq' => 'weekly']);
