@@ -94,6 +94,8 @@ public function getUrl(\Cake\ORM\Entity $entity) {
 }
 ```
 
+* To customize the templates used when displaying the Sitemap, the CakePHP Book provides information regarding [overriding Plugin Templates](http://book.cakephp.org/3.0/en/plugins.html#overriding-plugin-templates-from-inside-your-application).
+
 ## Contributing
 
 ### Code of Conduct
