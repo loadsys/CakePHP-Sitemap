@@ -4,6 +4,10 @@ namespace Sitemap\Test\App\Config;
 use Cake\Routing\Router;
 
 Router::scope('/', function ($routes) {
-	$routes->connect('/:controller', ['action' => 'index'], ['routeClass' => 'DashedRoute']);
-	$routes->connect('/:controller/:action/*', [], ['routeClass' => 'DashedRoute']);
+	$routes->connect('/pages/view/:id', [
+		'controller' => 'Pages',
+		'action' => 'view',
+	], ['pass' => ['id']]);
 });
+
+require ROOT . DS . 'config/routes.php';

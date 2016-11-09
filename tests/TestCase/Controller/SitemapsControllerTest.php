@@ -115,4 +115,10 @@ class SitemapsControllerTestCase extends IntegrationTestCase {
 
 		$Controller->index();
 	}
+
+	public function testIndexAccess() {
+		$this->get('/sitemap.xml');
+
+		$this->assertResponseOk();
+	}
 }
