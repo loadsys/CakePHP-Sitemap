@@ -3,9 +3,13 @@ use Cake\Routing\Router;
 
 Router::plugin(
 	'Sitemap',
-	['path' => '/sitemap'],
+	['path' => '/'],
 	function ($routes) {
 		$routes->extensions(['xml']);
-		$routes->fallbacks('DashedRoute');
+		$routes->connect('/sitemap', [
+			'controller' => 'Sitemaps',
+			'plugin' => 'Sitemap',
+			'action' => 'index'
+		]);
 	}
 );
