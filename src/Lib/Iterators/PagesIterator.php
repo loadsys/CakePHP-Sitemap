@@ -79,6 +79,7 @@ class PagesIterator extends ExtFilteredDirIterator {
 	 */
 	public function accept() {
 		$current = parent::current();
+
 		return parent::accept() && (strpos($current->getBasename('.ctp'), 'admin_') !== 0);
 	}
 

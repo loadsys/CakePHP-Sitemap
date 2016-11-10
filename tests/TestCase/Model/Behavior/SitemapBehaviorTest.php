@@ -1,6 +1,6 @@
 <?php
 /**
- * Tests for the Sitemap Behavior class.
+ * Tests for the SitemapBehavior class.
  */
 namespace Sitemap\Test\TestCase\Model\Behavior;
 
@@ -14,14 +14,20 @@ use Sitemap\Model\Behavior\SitemapBehavior;
 
 /**
  * \Siteamp\Test\TestCase\Model\Behavior\TestSitemapBehavior
+ *
+ * Class to expose the protected properties and methods for SitemapBehavior.
  */
 class TestSitemapBehavior extends SitemapBehavior {
+	// @codingStandardsIgnoreStart
 	public $_config;
 	public $_table;
+	// @codingStandardsIgnoreEnd
 }
 
 /**
  * \Siteamp\Test\TestCase\Model\Behavior\SitemapBehaviorTest
+ *
+ * Test class for the SitemapBehavior class.
  */
 class SitemapBehaviorTest extends TestCase {
 	/**
@@ -32,6 +38,7 @@ class SitemapBehaviorTest extends TestCase {
 	public $fixtures = [
 		'plugin.sitemap.pages',
 	];
+
 	/**
 	 * setUp method
 	 *
