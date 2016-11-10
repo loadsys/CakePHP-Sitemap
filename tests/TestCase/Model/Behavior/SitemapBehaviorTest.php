@@ -140,62 +140,162 @@ class SitemapBehaviorTest extends TestCase {
 	}
 
 	/**
-	 * Test findSitemapRecords method
+	 * Test ::findSitemapRecords when the Fields config is set.
 	 *
-	 * @param array $sitemapConfig The Configs for the Sitemap Behavior.
-	 * @param int $expectedCount The expected number of returning results from the find.
 	 * @return void
-	 * @dataProvider providerFindSitemapRecords
 	 */
-	public function testFindSitemapRecords($sitemapConfig, $expectedCount) {
-		$this->Pages->removeBehavior('Sitemap');
-		$this->Pages->addBehavior('Sitemap.Sitemap', $sitemapConfig);
+	public function testFindSitemapRecordsFields() {
+		$configs = [
+			'conditions' => [
+				'field1' => 'value1',
+			],
+			'cacheConfigKey' => 'cache-key-asdf',
+			'order' => [
+				'field2' => 'value2',
+			],
+			'fields' => [
+				'field3' => 'value3',
+			],
+		];
+		$options = [
+			'foo' => 'baz',
+		];
 
-		$query = $this->Pages->find('forSitemap');
-		$count = $query->count();
+		$TableMock = $this
+			->getMockBuilder('\Cake\ORM\Table')
+			->disableOriginalConstructor()
+			->getMock();
+		$SitemapBehavior = $this
+			->getMockBuilder('\Sitemap\Model\Behavior\SitemapBehavior')
+			->setMethods(['mapResults'])
+			->setConstructorArgs([$TableMock, $configs])
+			->getMock();
+
+		$QueryMock = $this->getMockBuilder('\Cake\ORM\Query')
+			->setMethods([
+				'where',
+				'cache',
+				'order',
+				'formatResults',
+				'select',
+				'repository',
+				'alias',
+			])
+			->disableOriginalConstructor()
+			->getMock();
+
+		$QueryMock->expects($this->once())
+			->method('where')
+			->with($configs['conditions'])
+			->will($this->returnSelf());
+		$QueryMock->expects($this->once())
+			->method('repository')
+			->with()
+			->will($this->returnSelf());
+		$QueryMock->expects($this->once())
+			->method('alias')
+			->with()
+			->will($this->returnValue('alias-canary'));
+		$QueryMock->expects($this->once())
+			->method('cache')
+			->with('sitemap_alias-canary', $configs['cacheConfigKey'])
+			->will($this->returnSelf());
+		$QueryMock->expects($this->once())
+			->method('order')
+			->with($configs['order'])
+			->will($this->returnSelf());
+		$QueryMock->expects($this->once())
+			->method('formatResults')
+			->with($this->isInstanceOf('closure'))
+			->will($this->returnSelf());
+		$QueryMock->expects($this->once())
+			->method('select')
+			->with($configs['fields'])
+			->will($this->returnValue('canary'));
+
+		$output = $SitemapBehavior->findSitemapRecords($QueryMock, $options);
 		$this->assertEquals(
-			$expectedCount,
-			$count,
-			"The count of the pages should be equal to {$expectedCount}"
+			'canary',
+			$output,
+			'The output from ::findSitemapRecords should be our mocked response from the Query Object.'
 		);
 	}
 
 	/**
-	 * DataProvider for testFindSitemapRecords.
+	 * Test ::findSitemapRecords when the Fields config is not set.
 	 *
-	 * @return array Data inputs for testFindSitemapRecords.
+	 * @return void
 	 */
-	public function providerFindSitemapRecords() {
-		return [
-			'Empty Config Options' => [
-				[],
-				5,
+	public function testFindSitemapRecordsNoFields() {
+		$configs = [
+			'conditions' => [
+				'field1' => 'value1',
 			],
-			'Non Conditional Config Options' => [
-				[
-					'lastmod' => 'modified_date',
-				],
-				5,
-			],
-
-			'Is Indexed TRUE Config Options' => [
-				[
-					'conditions' => [
-						'is_indexed' => true,
-					],
-				],
-				4,
-			],
-
-			'Is Indexed FALSE Config Options' => [
-				[
-					'conditions' => [
-						'is_indexed' => false,
-					],
-				],
-				1,
+			'cacheConfigKey' => 'cache-key-asdf',
+			'order' => [
+				'field2' => 'value2',
 			],
 		];
+		$options = [
+			'foo' => 'baz',
+		];
+
+		$TableMock = $this
+			->getMockBuilder('\Cake\ORM\Table')
+			->disableOriginalConstructor()
+			->getMock();
+		$SitemapBehavior = $this
+			->getMockBuilder('\Sitemap\Model\Behavior\SitemapBehavior')
+			->setMethods(['mapResults'])
+			->setConstructorArgs([$TableMock, $configs])
+			->getMock();
+
+		$QueryMock = $this->getMockBuilder('\Cake\ORM\Query')
+			->setMethods([
+				'where',
+				'cache',
+				'order',
+				'formatResults',
+				'select',
+				'repository',
+				'alias',
+			])
+			->disableOriginalConstructor()
+			->getMock();
+
+		$QueryMock->expects($this->once())
+			->method('where')
+			->with($configs['conditions'])
+			->will($this->returnSelf());
+		$QueryMock->expects($this->once())
+			->method('repository')
+			->with()
+			->will($this->returnSelf());
+		$QueryMock->expects($this->once())
+			->method('alias')
+			->with()
+			->will($this->returnValue('alias-canary'));
+		$QueryMock->expects($this->once())
+			->method('cache')
+			->with('sitemap_alias-canary', $configs['cacheConfigKey'])
+			->will($this->returnSelf());
+		$QueryMock->expects($this->once())
+			->method('order')
+			->with($configs['order'])
+			->will($this->returnSelf());
+		$QueryMock->expects($this->once())
+			->method('formatResults')
+			->with($this->isInstanceOf('closure'))
+			->will($this->returnValue('canary'));
+		$QueryMock->expects($this->never())
+			->method('select');
+
+		$output = $SitemapBehavior->findSitemapRecords($QueryMock, $options);
+		$this->assertEquals(
+			'canary',
+			$output,
+			'The output from ::findSitemapRecords should be our mocked response from the Query Object.'
+		);
 	}
 
 	/**
