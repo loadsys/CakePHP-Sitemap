@@ -123,8 +123,8 @@ class SitemapBehavior extends Behavior {
 	/**
 	 * Modify an entity with new `_` fields for the Sitemap display.
 	 *
-	 * @param \Cake\Orm\Entity $entity The entity being modified.
-	 * @return \Cake\Orm\Entity Returns the modified entity.
+	 * @param \Cake\ORM\Entity $entity The entity being modified.
+	 * @return \Cake\ORM\Entity Returns the modified entity.
 	 */
 	public function mapEntity(Entity $entity) {
 		$entity['_loc'] = $this->_table->getUrl($entity);
