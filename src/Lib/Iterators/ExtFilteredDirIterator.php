@@ -55,6 +55,7 @@ class ExtFilteredDirIterator extends FilterIterator {
 	 */
 	public function accept() {
 		$current = parent::current();
+
 		return (
 			!$current->isDot()
 			&&

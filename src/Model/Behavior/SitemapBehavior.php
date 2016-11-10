@@ -20,7 +20,9 @@ class SitemapBehavior extends Behavior {
 	 *
 	 * @var array
 	 */
+	// @codingStandardsIgnoreStart
 	protected $_defaultConfig = [
+	// @codingStandardsIgnoreEnd
 		'cacheConfigKey' => 'default',
 		'lastmod' => 'modified',
 		'changefreq' => 'daily',
@@ -64,6 +66,7 @@ class SitemapBehavior extends Behavior {
 	/**
 	 * Return the URL for the primary view action for an Entity.
 	 *
+	 * @param \Cake\ORM\Entity $entity Entity object passed in to return the url for.
 	 * @return string Returns the URL string.
 	 */
 	public function returnUrlForEntity(Entity $entity) {
@@ -82,12 +85,12 @@ class SitemapBehavior extends Behavior {
 	/**
 	 * Find the Sitemap Records for a Table.
 	 *
-	 * @param Query $query The Query being modified.
+	 * @param \Cake\ORM\Query $query The Query being modified.
 	 * @param array $options The array of options for the find.
-	 * @return Query Returns the modified Query object.
+	 * @return \Cake\ORM\Query Returns the modified Query object.
 	 */
 	public function findSitemapRecords(Query $query, array $options) {
-		$query
+		$query = $query
 			->where($this->_config['conditions'])
 			->cache("sitemap_{$query->repository()->alias()}", $this->_config['cacheConfigKey'])
 			->order($this->_config['order'])
@@ -96,7 +99,7 @@ class SitemapBehavior extends Behavior {
 			});
 
 		if (!empty($this->_config['fields'])) {
-			$query->select($this->_config['fields']);
+			$query = $query->select($this->_config['fields']);
 		}
 
 		return $query;
@@ -120,14 +123,15 @@ class SitemapBehavior extends Behavior {
 	/**
 	 * Modify an entity with new `_` fields for the Sitemap display.
 	 *
-	 * @param \Cake\Orm\Entity $entity The entity being modified.
-	 * @return Entity
+	 * @param \Cake\ORM\Entity $entity The entity being modified.
+	 * @return \Cake\ORM\Entity Returns the modified entity.
 	 */
 	public function mapEntity(Entity $entity) {
 		$entity['_loc'] = $this->_table->getUrl($entity);
 		$entity['_lastmod'] = $entity->{$this->_config['lastmod']};
 		$entity['_changefreq'] = $this->_config['changefreq'];
 		$entity['_priority'] = $this->_config['priority'];
+
 		return $entity;
 	}
 }
