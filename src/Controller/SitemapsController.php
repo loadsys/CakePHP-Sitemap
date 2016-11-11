@@ -30,5 +30,6 @@ class SitemapsController extends AppController {
 		}
 
 		$this->set('data', $data);
+		$this->set('_serialize', false);
 	}
 }
