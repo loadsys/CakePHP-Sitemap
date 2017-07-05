@@ -67,9 +67,15 @@ class SitemapsControllerTestCase extends IntegrationTestCase {
 			'\Sitemap\Controller\SitemapsController',
 			['set']
 		);
-		$Controller->expects($this->once())
+
+		$Controller->expects($this->at(0))
 			->method('set')
 			->with('data', [])
+			->will($this->returnValue(true));
+
+		$Controller->expects($this->at(1))
+			->method('set')
+			->with('_serialize', false)
 			->will($this->returnValue(true));
 
 		$Controller->index();
@@ -89,9 +95,15 @@ class SitemapsControllerTestCase extends IntegrationTestCase {
 			'\Sitemap\Controller\SitemapsController',
 			['set', 'loadModel']
 		);
-		$Controller->expects($this->once())
+
+		$Controller->expects($this->at(1))
 			->method('set')
 			->with('data', ['Pages' => $pagesFindQuery])
+			->will($this->returnValue(true));
+
+		$Controller->expects($this->at(2))
+			->method('set')
+			->with('_serialize', false)
 			->will($this->returnValue(true));
 
 		$Controller->expects($this->once())
