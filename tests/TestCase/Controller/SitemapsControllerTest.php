@@ -116,6 +116,12 @@ class SitemapsControllerTestCase extends IntegrationTestCase {
 		$Controller->index();
 	}
 
+	/**
+	 * Test the index method that the correct route is loaded and works.
+	 *
+	 * @return void
+	 * @covers \Sitemap\Controller\SitemapsController::index
+	 */
 	public function testIndexAccess() {
 		$this->get('/sitemap.xml');
 

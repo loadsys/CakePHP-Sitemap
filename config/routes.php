@@ -3,10 +3,10 @@ use Cake\Routing\Router;
 
 Router::plugin(
 	'Sitemap',
-	['path' => '/'],
+	['path' => '/sitemap'],
 	function ($routes) {
 		$routes->extensions(['xml']);
-		$routes->connect('/sitemap', [
+		$routes->connect('/', [
 			'controller' => 'Sitemaps',
 			'plugin' => 'Sitemap',
 			'action' => 'index'

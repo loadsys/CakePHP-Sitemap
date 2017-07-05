@@ -30,7 +30,7 @@ Plugin::load('Sitemap', ['bootstrap' => false, 'routes' => true]);
 OR
 
 ```shell
-$ bin/cake plugin load Sitemap
+$ bin/cake plugin load Sitemap -r
 ```
 
 ## Usage
@@ -50,6 +50,8 @@ Configure::write('Sitemap.tables', [
 ```php
 $this->addBehavior('Sitemap.Sitemap');
 ```
+
+You can now access the sitemap at `/sitemap.xml`.
 
 ### Configuration
 
