@@ -6,6 +6,10 @@ Router::plugin(
 	['path' => '/sitemap'],
 	function ($routes) {
 		$routes->extensions(['xml']);
-		$routes->fallbacks('DashedRoute');
+		$routes->connect('/', [
+			'controller' => 'Sitemaps',
+			'plugin' => 'Sitemap',
+			'action' => 'index'
+		]);
 	}
 );

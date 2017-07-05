@@ -3,11 +3,11 @@ define('ROOT', dirname(__DIR__));
 define('TMP', ROOT . DS . 'tmp' . DS);
 define('LOGS', TMP . 'logs' . DS);
 define('CACHE', TMP . 'cache' . DS);
-define('APP', sys_get_temp_dir());
-define('APP_DIR', 'src');
+define('APP_DIR', 'App');
+define('APP', ROOT . DS . 'tests' . DS . APP_DIR . DS);
 define('CAKE_CORE_INCLUDE_PATH', ROOT . '/vendor/cakephp/cakephp');
 define('CORE_PATH', CAKE_CORE_INCLUDE_PATH . DS);
-define('CAKE', CORE_PATH . APP_DIR . DS);
+define('CAKE', CORE_PATH . 'src' . DS);
 
 define('WWW_ROOT', ROOT . DS . 'webroot' . DS);
 define('CONFIG', dirname(__FILE__) . DS . 'config' . DS);
@@ -20,6 +20,9 @@ require CORE_PATH . 'config/bootstrap.php';
 Cake\Core\Configure::write('App', [
 	'namespace' => 'App',
 	'encoding' => 'UTF-8',
+	'paths' => [
+		'templates' => [APP . 'Template' . DS],
+	],
 ]);
 Cake\Core\Configure::write('debug', true);
 
@@ -73,5 +76,7 @@ Cake\Datasource\ConnectionManager::config('test', [
 	'quoteIdentifiers' => true,
 	'cacheMetadata' => true,
 ]);
+
+Cake\Routing\DispatcherFactory::add('Routing');
 
 class_alias('Cake\Controller\Controller', 'App\Controller\AppController');
