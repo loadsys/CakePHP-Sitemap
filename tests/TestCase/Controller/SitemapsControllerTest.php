@@ -5,6 +5,8 @@
 namespace Sitemap\Test\TestCase\Controller;
 
 use Cake\Core\Configure;
+use Cake\Database\Schema\TableSchema;
+use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 use Sitemap\Controller\SitemapsController;
@@ -130,8 +132,35 @@ class SitemapsControllerTestCase extends IntegrationTestCase {
 		$this->assertResponseOk();
 	}
 
-	public function testLoadingPluginTables()
-    {
-        
-    }
+	/**
+	 * Test that the index method can execute finds on namespaced plugin tables
+	 *
+	 * @return void
+	 */
+	public function testLoadingPluginTables() {
+		$exampleTableName = 'Example/Plugin.Posts';
+		Configure::write('Sitemap.tables', [$exampleTableName]);
+
+		$tableInstance = new Table([
+			'registryAlias' => 'Example/Plugin.Posts',
+			'alias' => 'Posts',
+			'table' => 'posts',
+			'schema' => new TableSchema('posts', [
+				'id' => ['type' => 'integer'],
+				'title' => ['type' => 'string'],
+			]),
+		]);
+		$tableInstance->addBehavior('Sitemap.Sitemap');
+
+		$Controller = $this->getMockBuilder(SitemapsController::class)
+			->setMethods(['loadModel'])
+			->getMock();
+
+		$Controller->expects($this->once())
+			->method('loadModel')
+			->with($exampleTableName)
+			->willReturn($tableInstance);
+
+		$Controller->index();
+	}
 }
