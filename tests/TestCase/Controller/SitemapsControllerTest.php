@@ -44,6 +44,8 @@ class SitemapsControllerTestCase extends IntegrationTestCase {
 	public function tearDown() {
 		unset($this->Pages);
 
+		Configure::clear();
+
 		parent::tearDown();
 	}
 
@@ -127,4 +129,9 @@ class SitemapsControllerTestCase extends IntegrationTestCase {
 
 		$this->assertResponseOk();
 	}
+
+	public function testLoadingPluginTables()
+    {
+        
+    }
 }
