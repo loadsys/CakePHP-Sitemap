@@ -113,7 +113,7 @@ class SitemapsControllerTestCase extends IntegrationTestCase {
 		$Controller->expects($this->once())
 			->method('loadModel')
 			->with('Pages')
-			->will($this->returnValue(true));
+			->willReturn($this->Pages);
 
 		$Controller->Pages = $this->Pages;
 
