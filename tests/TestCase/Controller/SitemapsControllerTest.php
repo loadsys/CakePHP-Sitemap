@@ -5,6 +5,8 @@
 namespace Sitemap\Test\TestCase\Controller;
 
 use Cake\Core\Configure;
+use Cake\Database\Schema\TableSchema;
+use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
 use Cake\TestSuite\IntegrationTestCase;
 use Sitemap\Controller\SitemapsController;
@@ -43,6 +45,8 @@ class SitemapsControllerTestCase extends IntegrationTestCase {
 	 */
 	public function tearDown() {
 		unset($this->Pages);
+
+		Configure::clear();
 
 		parent::tearDown();
 	}
@@ -109,7 +113,7 @@ class SitemapsControllerTestCase extends IntegrationTestCase {
 		$Controller->expects($this->once())
 			->method('loadModel')
 			->with('Pages')
-			->will($this->returnValue(true));
+			->willReturn($this->Pages);
 
 		$Controller->Pages = $this->Pages;
 
@@ -126,5 +130,37 @@ class SitemapsControllerTestCase extends IntegrationTestCase {
 		$this->get('/sitemap.xml');
 
 		$this->assertResponseOk();
+	}
+
+	/**
+	 * Test that the index method can execute finds on namespaced plugin tables
+	 *
+	 * @return void
+	 */
+	public function testLoadingPluginTables() {
+		$exampleTableName = 'Example/Plugin.Posts';
+		Configure::write('Sitemap.tables', [$exampleTableName]);
+
+		$tableInstance = new Table([
+			'registryAlias' => 'Example/Plugin.Posts',
+			'alias' => 'Posts',
+			'table' => 'posts',
+			'schema' => new TableSchema('posts', [
+				'id' => ['type' => 'integer'],
+				'title' => ['type' => 'string'],
+			]),
+		]);
+		$tableInstance->addBehavior('Sitemap.Sitemap');
+
+		$Controller = $this->getMockBuilder(SitemapsController::class)
+			->setMethods(['loadModel'])
+			->getMock();
+
+		$Controller->expects($this->once())
+			->method('loadModel')
+			->with($exampleTableName)
+			->willReturn($tableInstance);
+
+		$Controller->index();
 	}
 }

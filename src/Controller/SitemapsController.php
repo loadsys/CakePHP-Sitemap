@@ -25,8 +25,8 @@ class SitemapsController extends AppController {
 		}
 
 		foreach ($tablesToList as $table) {
-			$this->loadModel($table);
-			$data[$table] = $this->{$table}->find('forSitemap');
+			$tableInstance = $this->loadModel($table);
+			$data[$table] = $tableInstance->find('forSitemap');
 		}
 
 		$this->set('data', $data);
