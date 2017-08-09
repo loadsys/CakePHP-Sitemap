@@ -4,11 +4,14 @@
  */
 namespace Sitemap\Test\TestCase\Model\Behavior;
 
+use Cake\Core\Configure;
+use Cake\Database\Schema\TableSchema;
 use Cake\Datasource\ConnectionManager;
 use Cake\I18n\Time;
 use Cake\ORM\Entity;
 use Cake\ORM\Table;
 use Cake\ORM\TableRegistry;
+use Cake\Routing\Router;
 use Cake\TestSuite\TestCase;
 use Sitemap\Model\Behavior\SitemapBehavior;
 
@@ -137,6 +140,38 @@ class SitemapBehaviorTest extends TestCase {
 			$this->Pages->getUrl($entity),
 			'The method getUrl should return a valid url string for the passed entity.'
 		);
+	}
+
+	public function testReturnUrlForPluginEntity() {
+		Router::connect('/posts/view/:id', ['controller' => 'Posts', 'action' => 'view'], ['id' => '[\d]+', 'pass' => ['id']]);
+
+		$exampleTableName = 'Example/Plugin.Posts';
+		Configure::write('Sitemap.tables', [$exampleTableName]);
+
+		$tableInstance = new Table([
+			'registryAlias' => 'Example/Plugin.Posts',
+			'alias' => 'Posts',
+			'table' => 'posts',
+			'schema' => new TableSchema('posts', [
+				'id' => ['type' => 'integer'],
+				'title' => ['type' => 'string'],
+			]),
+		]);
+		$tableInstance->setPrimaryKey('id');
+		$tableInstance->addBehavior('Sitemap.Sitemap');
+
+		$post = new Entity([
+			'id' => 1,
+			'title' => 'First post',
+		], [
+			'source' => $tableInstance,
+		]);
+
+		$expected = '/posts/view/1';
+
+		$behavior = $tableInstance->behaviors()->get('Sitemap');
+
+		$this->assertEquals($expected, $behavior->returnUrlForEntity($post));
 	}
 
 	/**
