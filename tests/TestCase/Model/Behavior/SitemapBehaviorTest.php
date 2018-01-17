@@ -142,6 +142,11 @@ class SitemapBehaviorTest extends TestCase {
 		);
 	}
 
+	/**
+	 * Test the url for a plugin entity is correct
+	 *
+	 * @return void
+	 */
 	public function testReturnUrlForPluginEntity() {
 		Router::connect('/posts/view/:id', ['controller' => 'Posts', 'action' => 'view'], ['id' => '[\d]+', 'pass' => ['id']]);
 
