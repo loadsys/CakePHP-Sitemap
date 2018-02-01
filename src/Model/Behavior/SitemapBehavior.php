@@ -74,7 +74,7 @@ class SitemapBehavior extends Behavior {
 			[
 				'plugin' => null,
 				'prefix' => null,
-				'controller' => $this->_table->registryAlias(),
+				'controller' => $this->_table->alias(),
 				'action' => 'view',
 				$entity->{$this->_table->primaryKey()},
 			],
