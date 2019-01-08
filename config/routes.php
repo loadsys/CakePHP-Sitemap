@@ -5,7 +5,7 @@ Router::plugin(
 	'Sitemap',
 	['path' => '/sitemap'],
 	function ($routes) {
-		$routes->extensions(['xml']);
+		$routes->setExtensions(['xml']);
 		$routes->connect('/', [
 			'controller' => 'Sitemaps',
 			'plugin' => 'Sitemap',
